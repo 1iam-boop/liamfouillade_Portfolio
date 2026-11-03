@@ -1093,13 +1093,13 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     <div class="ttap" id="tbtap"></div>
   </div>
 </div>
-<div id="chestui" hidden role="dialog" aria-modal="true" aria-label="Coffre : mon arsenal">
+<div id="chestui" hidden role="dialog" aria-modal="true" aria-label="Coffre secret">
   <button class="close" id="chclose" type="button">← Refermer le coffre</button>
   <div class="inv">
-    <p class="kick">Coffre ouvert · 6 objets</p>
-    <h3>Mon arsenal</h3>
+    <p class="kick">Coffre secret · 6 armes</p>
+    <h3>L’armurerie</h3>
     <ul class="slots" id="chslots"></ul>
-    <div class="detail" id="chdetail"><div class="dh"><b id="chname"></b><span id="chrar"></span></div><p id="chdesc"></p><p class="use"><em>Utilisé pour :</em> <span id="chuse"></span></p></div>
+    <div class="detail" id="chdetail"><div class="dh"><b id="chname"></b><span id="chrar"></span></div><p id="chdesc"></p></div>
   </div>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -1121,8 +1121,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     { key: "veille", label: "Veille", obj: "Bibliothèque" },
     { key: "parcours", label: "Parcours", obj: "Cadres" },
     { key: "passions", label: "Passions", obj: "Moto et sport" },
-    { key: "contact", label: "Contact", obj: "Téléphone" },
-    { key: "coffre", label: "Coffre", obj: "Coffre au trésor" }
+    { key: "contact", label: "Contact", obj: "Téléphone" }
   ];
   var PART_OBJ = { passions: "moto" };
   var MODE = { projets: "pc", synthese: "board", competences: "tablet", apropos: "mirror" };
@@ -1469,12 +1468,12 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   /* ---------- Coffre : inventaire des armes ---------- */
   var chestOpen = false, chTimers = [], chUI = $("#chestui");
   var ARMS = [
-    { n: "Épée Debian", r: "Légendaire", c: "#ff9f1a", i: "🗡️", d: "Administration Linux : Debian 13, Apache2, PHP-FPM, MariaDB.", u: "Serveur GLPI (stage)" },
-    { n: "Bouclier Cyber", r: "Épique", c: "#b06bff", i: "🛡️", d: "Sécuriser les accès : mots de passe par défaut changés, droits limités. Bloc 3 du BTS.", u: "Serveur GLPI (stage)" },
-    { n: "Arc Réseau", r: "Épique", c: "#b06bff", i: "🏹", d: "VLAN 802.1Q, routage inter-VLAN, Spanning Tree, Cisco IOS, Packet Tracer.", u: "TP VLAN · TP Spanning Tree" },
-    { n: "Hache Windows Server", r: "Rare", c: "#3d8bff", i: "🪓", d: "Windows Server 2022 et DHCP ; déploiement de Windows 11 en masse avec FOG (PXE).", u: "TP DHCP · FOG (stage)" },
-    { n: "Marteau de dépannage", r: "Rare", c: "#3d8bff", i: "🔨", d: "Diagnostiquer à partir des journaux Apache, PHP et GLPI plutôt qu'au hasard.", u: "GLPI · FOG (stage)" },
-    { n: "Bâton des scripts", r: "Peu commun", c: "#35d07f", i: "🪄", d: "Python, SQL, HTML / CSS, et Chocolatey pour installer des logiciels en ligne de commande.", u: "Outils et code" }
+    { n: "Pistolet", r: "Légendaire", c: "#ff9f1a", i: "🔫", d: "Pistolet semi-automatique, finition noire mate." },
+    { n: "Revolver", r: "Épique", c: "#b06bff", i: "🔫", d: "Revolver chromé à barillet, crosse en bois." },
+    { n: "Katana", r: "Épique", c: "#b06bff", i: "⚔️", d: "Lame courbe, garde noire et poignée tressée." },
+    { n: "Épée", r: "Rare", c: "#3d8bff", i: "🗡️", d: "Épée médiévale à garde et pommeau dorés." },
+    { n: "Hache", r: "Rare", c: "#3d8bff", i: "🪓", d: "Hache de combat au manche en bois." },
+    { n: "Arc", r: "Peu commun", c: "#35d07f", i: "🏹", d: "Arc en bois, avec sa flèche." }
   ];
   (function () {
     var ul = $("#chslots");
@@ -1484,10 +1483,10 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     chSel = i; var a = ARMS[i], d = $("#chdetail");
     $$("#chslots .slot").forEach(function (b, j) { b.classList.toggle("on", j === i); });
     d.style.setProperty("--rc", a.c); d.classList.remove("in"); void d.offsetWidth; d.classList.add("in");
-    $("#chname").textContent = a.n; $("#chrar").textContent = a.r; $("#chdesc").textContent = a.d; $("#chuse").textContent = a.u;
+    $("#chname").textContent = a.n; $("#chrar").textContent = a.r; $("#chdesc").textContent = a.d;
   }
   function openChest() {
-    chestOpen = true; document.body.classList.add("open", "reading"); chTimers.forEach(clearTimeout); chTimers = [];
+    chestOpen = true; document.body.classList.add("open", "reading"); chTimers.forEach(clearTimeout); chTimers = []; showTip("Tu as trouvé le coffre secret !", 3500);
     if (!sceneOK) { chPick(0); chUI.hidden = false; void chUI.offsetWidth; chUI.classList.add("show"); return; }
     chTimers.push(setTimeout(function () {
       chestRun(1, 1000);
@@ -1748,9 +1747,9 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   var OBJLOCAL = {}; OBJ = OBJLOCAL;
   function reg(key, group, anchor, camPos, target, o) {
     o = o || {}; group.userData.key = key; scene.add(group);
-    OBJ[key] = { group: group, part: o.part || key, label: o.label || key, scroll: o.scroll || null, center: !!o.center, fov: o.fov || 0, fovN: o.fovN || 0, noclick: !!o.noclick, anchor: new THREE.Vector3(anchor[0], anchor[1], anchor[2]), camPos: new THREE.Vector3(camPos[0], camPos[1], camPos[2]), target: new THREE.Vector3(target[0], target[1], target[2]), mats: [] };
+    OBJ[key] = { group: group, part: o.part || key, label: o.label || key, scroll: o.scroll || null, center: !!o.center, fov: o.fov || 0, fovN: o.fovN || 0, noclick: !!o.noclick, notag: !!o.notag, anchor: new THREE.Vector3(anchor[0], anchor[1], anchor[2]), camPos: new THREE.Vector3(camPos[0], camPos[1], camPos[2]), target: new THREE.Vector3(target[0], target[1], target[2]), mats: [] };
     group.traverse(function (m) {
-      if (m.isMesh && m.material && m.material.emissive && !m.userData.noHover) OBJ[key].mats.push({ m: m.material, e: m.material.emissive.clone(), i: m.material.emissiveIntensity });
+      if (!o.nohover && m.isMesh && m.material && m.material.emissive && !m.userData.noHover) OBJ[key].mats.push({ m: m.material, e: m.material.emissive.clone(), i: m.material.emissiveIntensity });
       if (m.isMesh) m.userData.key = key;
     });
   }
@@ -2616,13 +2615,45 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     var ar = new THREE.Group(); ar.add(put(cyl(0.004, 0.004, 0.36, 0xd9c7a0), 0, 0, 0)); var ah = new THREE.Mesh(new THREE.ConeGeometry(0.012, 0.035, 4), mat(0xdfe3ea, steel())); ah.position.y = 0.19; ar.add(ah); ar.add(put(box(0.025, 0.04, 0.002, 0xe5484d), 0, -0.16, 0)); ar.rotation.z = Math.PI / 2; ar.position.set(-0.02, 0.02, 0.01); g.add(ar); g.scale.setScalar(0.9); return g; }
   function wStaff() { var g = new THREE.Group(); g.add(put(cyl(0.011, 0.014, 0.44, 0x5a3e24, { r: 0.8 }), 0, -0.04, 0)); var orb = new THREE.Mesh(new THREE.SphereGeometry(0.04, 20, 14), new THREE.MeshStandardMaterial({ color: 0x7be3ff, emissive: 0x35e0ff, emissiveIntensity: 1.1, roughness: 0.1 })); orb.position.y = 0.22; g.add(orb);
     for (var k = 0; k < 3; k++) { var pr = cyl(0.005, 0.003, 0.07, 0xd9b24a, { m: 0.6 }); pr.position.set(Math.cos(k * 2.09) * 0.035, 0.2, Math.sin(k * 2.09) * 0.035); pr.rotation.z = -Math.cos(k * 2.09) * 0.4; pr.rotation.x = Math.sin(k * 2.09) * 0.4; g.add(pr); } return g; }
-  var ARMS3 = [[wSword, 0xff9f1a], [wShield, 0xb06bff], [wBow, 0xb06bff], [wAxe, 0x3d8bff], [wHammer, 0x3d8bff], [wStaff, 0x35d07f]];
+  function wPistol() { var o = new THREE.Group(), g = new THREE.Group(); o.add(g);
+    var BLK = 0x1a1b1f;
+    g.add(put(rbox(0.19, 0.036, 0.028, 0.006, BLK, { m: 0.5, r: 0.35 }), 0.01, 0.032, 0));
+    for (var k = 0; k < 6; k++) g.add(put(box(0.003, 0.03, 0.0295, 0x0b0c0f), -0.07 + k * 0.007, 0.032, 0));
+    g.add(put(box(0.15, 0.022, 0.026, 0x15161a, { r: 0.6 }), -0.005, 0.004, 0));
+    var grip = rbox(0.048, 0.115, 0.031, 0.009, 0x15161a, { r: 0.75 }); grip.position.set(-0.062, -0.05, 0); grip.rotation.z = 0.24; g.add(grip);
+    var tg = tor(0.019, 0.004, 0x15161a, { r: 0.6 }, Math.PI); tg.rotation.z = Math.PI; tg.position.set(0.0, -0.008, 0); g.add(tg);
+    g.add(put(box(0.006, 0.02, 0.007, 0x2a2c31, { m: 0.5 }), -0.004, -0.012, 0));
+    var mz = cyl(0.007, 0.007, 0.006, 0x050506); mz.rotation.z = Math.PI / 2; mz.position.set(0.106, 0.032, 0); g.add(mz);
+    g.add(put(box(0.008, 0.008, 0.006, 0x0b0c0f), 0.095, 0.054, 0)); g.add(put(box(0.008, 0.008, 0.016, 0x0b0c0f), -0.075, 0.054, 0));
+    g.scale.setScalar(1.35); return o; }
+  function wRevolver() { var o = new THREE.Group(), g = new THREE.Group(); o.add(g);
+    var CH = 0xd3d7de;
+    var br = cyl(0.011, 0.011, 0.14, CH, { m: 0.6, r: 0.2 }); br.rotation.z = Math.PI / 2; br.position.set(0.085, 0.04, 0); g.add(br);
+    g.add(put(box(0.12, 0.012, 0.016, CH, { m: 0.6, r: 0.2 }), 0.085, 0.024, 0));
+    var drum = cyl(0.024, 0.024, 0.045, CH, { m: 0.6, r: 0.2 }, 18); drum.rotation.z = Math.PI / 2; drum.position.set(0.0, 0.032, 0); g.add(drum);
+    for (var k = 0; k < 6; k++) { var fl = box(0.04, 0.006, 0.004, 0x6b7280, { m: 0.5 }); var a = k * Math.PI / 3; fl.position.set(0.0, 0.032 + Math.cos(a) * 0.022, Math.sin(a) * 0.022); fl.rotation.x = -a; g.add(fl); }
+    g.add(put(rbox(0.075, 0.05, 0.024, 0.008, CH, { m: 0.6, r: 0.2 }), -0.005, 0.03, 0));
+    var grip = rbox(0.042, 0.105, 0.03, 0.012, 0x6b3e1e, { r: 0.55 }); grip.position.set(-0.042, -0.022, 0); grip.rotation.z = 0.32; g.add(grip);
+    g.add(put(box(0.012, 0.022, 0.008, CH, { m: 0.6, r: 0.2 }), -0.04, 0.062, 0));
+    var tg = tor(0.017, 0.0035, CH, { m: 0.6, r: 0.2 }, Math.PI); tg.rotation.z = Math.PI; tg.position.set(-0.012, 0.0, 0); g.add(tg);
+    g.add(put(box(0.005, 0.018, 0.006, CH, { m: 0.6 }), -0.014, -0.004, 0));
+    g.scale.setScalar(1.35); return o; }
+  function wKatana() { var o = new THREE.Group(), g = new THREE.Group(); o.add(g);
+    var s = new THREE.Shape(); s.moveTo(0, 0); s.quadraticCurveTo(0.3, 0.01, 0.52, 0.045); s.lineTo(0.56, 0.06); s.lineTo(0.52, 0.068); s.quadraticCurveTo(0.3, 0.036, 0, 0.026); s.lineTo(0, 0);
+    var bl = new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth: 0.004, bevelEnabled: true, bevelThickness: 0.002, bevelSize: 0.002, bevelSegments: 1 }), mat(0xe6e9ef, { m: 0.6, r: 0.18 })); bl.position.z = -0.002; bl.castShadow = true; g.add(bl);
+    g.add(put(box(0.02, 0.03, 0.012, 0xd9b24a, { m: 0.6, r: 0.3 }), -0.005, 0.013, 0));
+    var tsuba = cyl(0.036, 0.036, 0.008, 0x2a2c31, { m: 0.5, r: 0.4 }, 20); tsuba.rotation.z = Math.PI / 2; tsuba.position.set(-0.018, 0.013, 0); g.add(tsuba);
+    var wrapT = tex(128, 32, function (x, w, h) { x.fillStyle = "#e8e2d6"; x.fillRect(0, 0, w, h); x.fillStyle = "#15161a"; for (var i = 0; i < w; i += 16) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i + 8, h / 2); x.lineTo(i, h); x.lineTo(i + 16, h); x.lineTo(i + 8, h / 2); x.lineTo(i + 16, 0); x.fill(); } });
+    var tsuka = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.028, 0.02), new THREE.MeshStandardMaterial({ map: wrapT.t, roughness: 0.8 })); tsuka.position.set(-0.123, 0.012, 0); tsuka.castShadow = true; g.add(tsuka);
+    g.add(put(box(0.012, 0.03, 0.022, 0xd9b24a, { m: 0.6, r: 0.3 }), -0.228, 0.012, 0));
+    g.position.set(-0.12, -0.03, 0); g.rotation.z = 0.75; o.scale.setScalar(0.62); return o; }
+  var ARMS3 = [[wPistol, 0xff9f1a], [wRevolver, 0xb06bff], [wKatana, 0xb06bff], [wSword, 0x3d8bff], [wAxe, 0x3d8bff], [wBow, 0x35d07f]];
   var weapons = ARMS3.map(function (a, i) {
     var g = new THREE.Group(), body = a[0](); g.add(body); var au = aura(a[1]); g.add(au); g.userData = { body: body, aura: au, k: 0, tw: null, col: i % 3, row: Math.floor(i / 3) };
     g.visible = false; chestIn.add(g); return g;
   });
   chest.position.set(-2.5, 0, 0.0); chest.rotation.y = Math.PI / 2;
-  reg("coffre", chest, [-2.5, 0.75, 0.0], [-0.65, 1.3, 0.0], [-2.45, 0.98, 0.0], { label: "Coffre" });
+  reg("coffre", chest, [-2.5, 0.75, 0.0], [-0.65, 1.3, 0.0], [-2.45, 0.98, 0.0], { label: "Coffre", notag: true, nohover: true });
   blob(-2.5, 0.0, 0.32, 0.45, 0.5);
   var chK = 0, chTw = null, chSel = 0;
   function chestRun(to, dur, cb) { chTw = { from: chK, to: to, t0: performance.now(), dur: reduce ? 0 : dur, cb: cb }; }
@@ -2638,7 +2669,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
       if (u.tw && now >= u.tw.t0) { var q = u.tw.dur ? Math.min(1, (now - u.tw.t0) / u.tw.dur) : 1; u.k = u.tw.from + (u.tw.to - u.tw.from) * q; if (q >= 1) u.tw = null; }
       g.visible = u.k > 0.001; if (!g.visible) return;
       var k = ease(u.k), sel = chestOpen && i === chSel ? 1 : 0;
-      var tx = (u.col - 1) * 0.32, ty = u.row === 0 ? 1.3 : 0.84, tz = 0.16 + sel * 0.12;
+      var tx = (u.col - 1) * 0.32, ty = u.row === 0 ? 1.24 : 0.82, tz = 0.16 + sel * 0.12;
       g.position.set(tx * k, 0.15 + (ty - 0.15) * k + Math.sin(t * 1.6 + i) * 0.015 * k, tz * k);
       g.scale.setScalar((0.25 + 0.75 * k) * (1 + sel * 0.18));
       u.body.rotation.y = sel ? u.body.rotation.y + dt * 1.8 : Math.sin(t * 0.8 + i) * 0.45;
@@ -2765,7 +2796,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   }
 
   var tags = [], labelsEl = $("#labels");
-  Object.keys(OBJ).filter(function (k) { return !OBJ[k].noclick; }).forEach(function (k) {
+  Object.keys(OBJ).filter(function (k) { return !OBJ[k].noclick && !OBJ[k].notag; }).forEach(function (k) {
     var el = document.createElement("button"); el.type = "button"; el.className = "tag"; el.tabIndex = -1; el.setAttribute("aria-hidden", "true");
     el.innerHTML = "<i></i>" + OBJ[k].label;
     el.addEventListener("click", function () { if (ENTERED) openPart(k, null); });
