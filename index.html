@@ -468,6 +468,68 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
 
 body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
 
+/* ===== Tableau : écriture au feutre ===== */
+#panel .wr{clip-path:inset(0 100% 0 0)}
+#panel .wr.go{clip-path:inset(0 0 0 0);transition:clip-path var(--t,400ms) linear var(--dl,0ms)}
+#pen{position:absolute;left:0;top:0;width:0;height:0;z-index:7;pointer-events:none;opacity:0;transition:opacity .2s}
+#pen.on{opacity:1}
+#pen.jump{transition:left var(--t) ease-out,top var(--t) ease-out,opacity .2s}
+#pen.mv{transition:left var(--t) linear,opacity .2s}
+#pen::before{content:"";position:absolute;left:-5px;bottom:-2px;width:14px;height:78px;border-radius:4px 4px 3px 3px;background:linear-gradient(#1b2a41 0 12%,#2a7de1 12% 70%,#f2f4f8 70% 80%,#2a7de1 80% 92%,#14213a 92%);transform:rotate(28deg);transform-origin:50% 100%;box-shadow:3px 6px 10px #0004}
+#pen.mv::before{animation:scrib .14s linear infinite}
+@keyframes scrib{0%,100%{transform:rotate(28deg) translateY(0)}50%{transform:rotate(25deg) translateY(-3px)}}
+@media (min-width:821px){
+ #panel.onscreen[data-mode="board"]{right:auto;bottom:auto;transform:none;opacity:1;border:0;border-radius:2px;box-shadow:none;animation:none;transition:opacity .35s;background:#f7f8fb}
+ #panel.onscreen[data-mode="board"]:not(.show){opacity:0}
+ #panel.onscreen[data-mode="board"] .phead{position:absolute;top:10px;right:12px;z-index:6;background:none;border:0;padding:0}
+ #panel.onscreen[data-mode="board"] .where{display:none}
+ #panel.onscreen[data-mode="board"] #pbody{padding:2.5% 4% 4%}
+}
+
+/* ===== Téléphone en main ===== */
+#phoneui{position:fixed;inset:0;z-index:12;pointer-events:none}
+#phoneui[hidden]{display:none}
+#phoneui>.close{position:absolute;top:14px;left:14px;pointer-events:auto;opacity:0;transition:opacity .3s}
+#phoneui.show>.close{opacity:1}
+#phscr{position:absolute;overflow:hidden;border-radius:1.1em;background:#0d1a2e;color:#fff;font-family:var(--sans);pointer-events:auto;opacity:0;transition:opacity .25s;box-shadow:0 0 30px #35e0ff22}
+#phoneui.show #phscr{opacity:1}
+#phoneui.flat #phscr{left:50%!important;top:50%!important;width:min(300px,80vw)!important;height:min(600px,80vh)!important;transform:translate(-50%,-50%);font-size:17px!important;border:10px solid #111319;border-radius:36px}
+#phscr .sb{position:absolute;left:0;right:0;top:0;height:2.2em;display:flex;align-items:center;gap:.5em;padding:0 1.1em;font:600 .78em var(--sans);z-index:4}
+#phscr .sb time{margin-right:auto}
+#phscr .sig{display:flex;align-items:flex-end;gap:2px;height:.8em}#phscr .sig i{width:3px;background:#fff;border-radius:1px}#phscr .sig i:nth-child(1){height:30%}#phscr .sig i:nth-child(2){height:55%}#phscr .sig i:nth-child(3){height:80%}#phscr .sig i:nth-child(4){height:100%}
+#phscr .bat{width:1.6em;height:.75em;border:1.5px solid #fff;border-radius:3px;position:relative}#phscr .bat::after{content:"";position:absolute;inset:1px;right:25%;background:#35ff7a;border-radius:1px}
+#phscr .lock{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding-top:4.2em;background:linear-gradient(#16345a,#2a1a55);transition:transform .45s cubic-bezier(.5,0,.2,1),opacity .45s}
+#phoneui.unlock .lock{transform:translateY(-100%);opacity:.4}
+#phscr .lock>b{font:700 3.6em/1 var(--sans);letter-spacing:-.02em}
+#phscr .lock>span{margin-top:.4em;color:#b8c7e6;font-size:.95em;text-transform:capitalize}
+#phscr .notif{margin-top:3.2em;width:86%;display:flex;gap:.7em;align-items:center;padding:.8em .9em;border-radius:1em;background:#35e0ffe6;color:#04121c;transition:transform .15s}
+#phscr .notif em{font-style:normal;font-size:1.4em}#phscr .notif b{display:block;font-size:.95em}#phscr .notif span{font-size:.85em}
+#phoneui.tapped .notif{transform:scale(.95)}
+#phscr .tap{position:absolute;left:50%;top:calc(4.2em + 3.6em + 1.8em + 3.2em + 1.6em);width:2.6em;height:2.6em;margin:-1.3em;border-radius:50%;background:#fff8;opacity:0;transform:scale(.4)}
+#phoneui.tapped .tap{animation:tap .5s ease-out}
+@keyframes tap{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(1.8)}}
+#phscr .swipe{position:absolute;bottom:2.2em;margin:0;font-size:.75em;color:#b8c7e6}
+#phscr .app{position:absolute;inset:0;padding:2.5em .9em 1.4em;background:#0b1118;display:flex;flex-direction:column;gap:.6em;transform:translateY(30%) scale(.9);opacity:0;transition:transform .45s cubic-bezier(.2,.9,.3,1),opacity .35s;overflow:hidden}
+#phoneui.unlock .app{transform:none;opacity:1}
+#phscr .ahead{display:flex;justify-content:space-between;align-items:center;font-size:.85em;color:#35e0ff}#phscr .ahead b{color:#fff}#phscr .ahead span:last-child{width:4em}
+#phscr .card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.25em}
+#phscr .av{width:2.3em;height:2.3em;border-radius:50%;display:grid;place-items:center;font:700 1.9em var(--mono);background:linear-gradient(135deg,#2a7de1,#9b5de5)}
+#phscr .card h3{margin:.2em 0 0;font:700 1.15em var(--sans);color:#fff}
+#phscr .card p{margin:0;font-size:.74em;line-height:1.3;color:#9aa7bd}
+#phscr .pill{margin-top:.3em;font-size:.72em;color:#35ff7a;background:#35ff7a1a;border:1px solid #35ff7a55;border-radius:999px;padding:.2em .7em}
+#phscr .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em}
+#phscr .acts a,#phscr .acts button{display:flex;flex-direction:column;align-items:center;gap:.25em;padding:.55em .2em;border-radius:.8em;background:#16233a;color:#e8edf5;border:0;font:600 .75em var(--sans);text-decoration:none;cursor:pointer;transition:background .2s,transform .15s}
+#phscr .acts a:hover,#phscr .acts button:hover{background:#2a7de1}#phscr .acts a:active,#phscr .acts button:active{transform:scale(.94)}
+#phscr .acts i{font-style:normal;font-size:1.35em;color:#35e0ff}
+#phscr .chat{flex:1;display:flex;flex-direction:column;justify-content:flex-start;gap:.4em;min-height:0;overflow:hidden}
+#phscr .bub{align-self:flex-start;max-width:92%;padding:.55em .75em;border-radius:1em 1em 1em .3em;background:#1d2b44;font-size:.78em;line-height:1.35}
+#phscr #phmsg:empty{display:none}
+#phscr .typing{display:none;gap:.3em}#phoneui.typing .typing{display:flex}
+#phscr .typing i{width:.45em;height:.45em;border-radius:50%;background:#9aa7bd;animation:dots 1s infinite}#phscr .typing i:nth-child(2){animation-delay:.15s}#phscr .typing i:nth-child(3){animation-delay:.3s}
+@keyframes dots{0%,60%,100%{opacity:.3;transform:none}30%{opacity:1;transform:translateY(-.2em)}}
+#phscr .mailrow{text-align:center;font:500 .66em var(--mono);color:#9aa7bd}
+#phscr .home{position:absolute;bottom:.5em;left:50%;width:35%;height:.25em;margin-left:-17.5%;border-radius:1em;background:#fff9;z-index:4}
+
 </style>
 </head>
 <body>
@@ -782,6 +844,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
  </div>
   <div id="pctask" aria-hidden="true"><span class="st">▦ Démarrer</span><span class="tk">📁 Projets</span><span class="tray"><em>● Réseau</em><em class="vol">🔊</em><time id="pcclock"></time></span></div>
   <div id="pcboot" aria-hidden="true"><div class="post" id="pcpost"></div><div class="logo"><b>Liam OS</b><i><u></u></i></div><div class="login"><div class="av">L</div><b>Liam</b><div class="pw" id="pcpw"></div><span class="wel">Bienvenue</span></div><div class="desk"><div class="icons"><div class="ico" id="icoProj"><i>📁</i><span>Projets</span></div><div class="ico"><i>📄</i><span>Documents</span></div><div class="ico"><i>⌨️</i><span>Terminal</span></div><div class="ico"><i>🗑️</i><span>Corbeille</span></div></div><div class="cur" id="pccur"></div></div></div>
+  <div id="pen" aria-hidden="true"></div>
 </aside>
 
 <div id="intro">
@@ -881,6 +944,22 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   <p class="fin">Fin de la fiche · merci d’avoir lu</p>
 </article>
 </div>
+<div id="phoneui" hidden role="dialog" aria-modal="true" aria-label="Téléphone : me contacter">
+  <button class="close" id="phclose" type="button">← Reposer le téléphone</button>
+  <div id="phscr">
+    <div class="sb"><time id="phtime"></time><span class="sig"><i></i><i></i><i></i><i></i></span><span class="bat"></span></div>
+    <div class="app">
+      <div class="ahead"><span>‹ Contacts</span><b>Liam</b><span></span></div>
+      <div class="card"><div class="av">L</div><h3>Liam Fouillade</h3><p>Technicien systèmes &amp; réseaux · BTS SIO SISR</p><span class="pill">● Disponible : stage ou alternance</span></div>
+      <div class="acts"><a href="mailto:lfouillade.pro@gmail.com"><i>✉</i>Mail</a><button type="button" id="phcopy"><i>⧉</i>Copier</button><a href="https://github.com/1iam-boop" target="_blank" rel="noopener"><i>&lt;/&gt;</i>GitHub</a></div>
+      <div class="chat"><div class="bub typing"><i></i><i></i><i></i></div><div class="bub" id="phmsg"></div></div>
+      <div class="mailrow">lfouillade.pro@gmail.com</div>
+    </div>
+    <div class="lock"><b id="phbig"></b><span id="phday"></span><div class="notif"><em>✉</em><div><b>Nouveau message</b><span>Contactez Liam</span></div></div><p class="swipe">Touche la notification pour ouvrir</p></div>
+    <div class="tap"></div>
+    <div class="home"></div>
+  </div>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -921,6 +1000,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     panel.dataset.mode = md;
     $("#close").textContent = CLOSE_TXT[md];
     if (key === "competences") typeCmd("cat competences.md");
+    if (key === "synthese") { prepBoard(); setTimeout(writeBoard, 450); }
     if (md === "pc") startPC(); else stopPC();
     if (key === "apropos") { skinHold = true; pickSkin(skinIdx, true); }
     $("#ptitle").textContent = p.obj + " · " + p.label;
@@ -938,15 +1018,24 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     var okey = (OBJ && OBJ[key]) ? key : (PART_OBJ[key] || key);
     var part = (OBJ && OBJ[okey] && OBJ[okey].part) || key;
     var scrollSel = (OBJ && OBJ[okey] && OBJ[okey].scroll) || null;
-    if (current && part === "veille") hidePanelNow();
+    if (current && (part === "veille" || part === "contact")) hidePanelNow();
     if (sceneOK) { setHover(null); focusKey = okey; chairGoal = okey === "projets" ? 1 : 0; focusOn(okey); }
     if (part === "veille") { openBook(); return; }
+    if (part === "contact") { openPhone(); return; }
+    if (part === "synthese" && sceneOK && !reduce && !current) {
+      document.body.classList.add("open"); eraseRun(1, 1350, "wipe");
+      clearTimeout(pendingT); pendingT = setTimeout(function () { pendingT = null; showPanel(part, scrollSel); }, 1400); return;
+    }
     showPanel(part, scrollSel);
   }
   function hidePanelNow() { if (!current) return; stopPC(); panel.classList.remove("show", "winup", "crtoff"); panel.hidden = true; document.body.classList.remove("open"); current = null; }
+  var pendingT = null;
   function closePanel() {
+    if (phoneOpen) { closePhone(); return; }
     if (reading) { closeBook(); return; }
+    if (!current && pendingT) { clearTimeout(pendingT); pendingT = null; document.body.classList.remove("open"); if (sceneOK && focusKey) leaveFocus(focusKey); return; }
     if (!current) return;
+    if (current === "synthese") { wTimers.forEach(clearTimeout); wTimers = []; writing = false; $("#pen").className = ""; }
     if (panel.dataset.mode === "pc" && !reduce && !pcOffing) { pcOffing = true; stopPC(); panel.classList.add("crtoff"); setTimeout(closePanel, 430); return; }
     pcOffing = false; if (panel.dataset.mode === "pc") stopPC();
     panel.classList.remove("show"); document.body.classList.remove("open"); current = null;
@@ -1020,6 +1109,93 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   }
   function stopPC() { clearInterval(pcClock); bootTimers.forEach(clearTimeout); bootTimers = []; var b = $("#pcboot"); if (b) b.className = ""; }
   $("#pcboot").addEventListener("click", pcReady);
+  /* ---------- Tableau blanc : on efface, puis on écrit au feutre ---------- */
+  var wTimers = [], writing = false;
+  function wLater(fn, ms) { wTimers.push(setTimeout(fn, ms)); }
+  function boardBlocks() {
+    var host = $('.pc[data-k="synthese"]'), out = [];
+    ["h2", ".sub", ".legend"].forEach(function (s) { var el = $(s, host); if (el) out.push({ row: el, els: [el], dur: s === "h2" ? 600 : s === ".sub" ? 900 : 500 }); });
+    $$("tr", host).forEach(function (tr) { out.push({ row: tr, els: Array.prototype.slice.call(tr.children), dur: tr.classList.contains("grp") ? 340 : 210 }); });
+    var n = $(".note", host); if (n) out.push({ row: n, els: [n], dur: 800 });
+    return out;
+  }
+  function prepBoard() {
+    wTimers.forEach(clearTimeout); wTimers = []; writing = false;
+    var bl = boardBlocks();
+    bl.forEach(function (b) { b.els.forEach(function (el) { el.classList.remove("go"); el.style.removeProperty("--t"); el.style.removeProperty("--dl"); if (!reduce) el.classList.add("wr"); }); });
+    $("#pen").className = "";
+  }
+  function finishBoard() {
+    wTimers.forEach(clearTimeout); wTimers = []; writing = false;
+    $$('.pc[data-k="synthese"] .wr').forEach(function (el) { el.classList.remove("wr", "go"); });
+    $("#pen").className = "";
+  }
+  function writeBoard() {
+    if (reduce || current !== "synthese") { finishBoard(); return; }
+    writing = true;
+    var pen = $("#pen"), pb = $("#pbody"), pr = pb.getBoundingClientRect(), panR = panel.getBoundingClientRect(), t = 0;
+    pen.className = "on";
+    boardBlocks().forEach(function (b) {
+      var r = b.row.getBoundingClientRect(), vis = r.bottom > pr.top && r.top < pr.bottom - 10;
+      if (!vis) { wLater(function () { b.els.forEach(function (el) { el.classList.remove("wr"); }); }, t); return; }
+      var dur = b.dur, x0 = r.left - panR.left, x1 = x0 + Math.min(r.width, b.els.length > 1 ? r.width : r.width), y = r.top - panR.top + Math.min(r.height * 0.7, 26);
+      if (b.els.length === 1) { var ir = b.els[0]; var range = document.createRange(); range.selectNodeContents(ir); var rr = range.getBoundingClientRect(); if (rr.width) x1 = rr.right - panR.left; }
+      wLater(function () { pen.classList.remove("mv"); pen.style.setProperty("--t", "100ms"); pen.classList.add("jump"); pen.style.left = x0 + "px"; pen.style.top = y + "px"; }, t);
+      t += 110;
+      wLater(function () {
+        pen.classList.remove("jump"); pen.style.setProperty("--t", dur + "ms"); pen.classList.add("mv"); pen.style.left = x1 + "px";
+        b.els.forEach(function (el) {
+          var er = el.getBoundingClientRect(), dl = r.width ? ((er.left - r.left) / r.width) * dur : 0, ed = r.width ? Math.max(60, (er.width / r.width) * dur) : dur;
+          el.style.setProperty("--dl", Math.round(dl) + "ms"); el.style.setProperty("--t", Math.round(ed) + "ms"); el.classList.add("go");
+        });
+      }, t);
+      t += dur + 40;
+    });
+    wLater(function () { pen.className = ""; finishBoard(); }, t + 200);
+  }
+  $("#pbody").addEventListener("pointerdown", function () { if (writing) finishBoard(); });
+
+  /* ---------- Téléphone : on le prend en main, il se déverrouille ---------- */
+  var phoneOpen = false, phTimers = [], phUI = $("#phoneui");
+  function phLater(fn, ms) { phTimers.push(setTimeout(fn, ms)); }
+  function phClock() { var d = new Date(); $("#phtime").textContent = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2); $("#phbig").textContent = $("#phtime").textContent; $("#phday").textContent = d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }); }
+  var MSG = "Bonjour ! Je cherche un stage ou une alternance de technicien systèmes et réseaux. Écrivez-moi, je réponds vite 🙂";
+  function phoneSeq() {
+    phTimers.forEach(clearTimeout); phTimers = []; phClock();
+    phUI.classList.remove("unlock", "tapped", "typed"); $("#phmsg").textContent = "";
+    if (reduce) { phUI.classList.add("unlock", "typed"); $("#phmsg").textContent = MSG; return; }
+    phLater(function () { phUI.classList.add("tapped"); }, 650);
+    phLater(function () { phUI.classList.add("unlock"); }, 1000);
+    phLater(function () { phUI.classList.add("typing"); }, 1600);
+    phLater(function () {
+      phUI.classList.remove("typing"); var i = 0, m = $("#phmsg");
+      (function typeNext() { if (!phoneOpen) return; m.textContent = MSG.slice(0, ++i); if (i < MSG.length) phLater(typeNext, 22); else phUI.classList.add("typed"); })();
+    }, 2700);
+  }
+  function showPhoneUI() {
+    if (!phoneOpen) return;
+    phUI.hidden = false; void phUI.offsetWidth; phUI.classList.add("show"); phoneSeq();
+    setTimeout(function () { $("#phclose").focus({ preventScroll: true }); }, 100);
+  }
+  function openPhone() {
+    phoneOpen = true; document.body.classList.add("open", "reading"); phUI.classList.toggle("flat", !sceneOK);
+    if (!sceneOK) { showPhoneUI(); return; }
+    setTimeout(function () { if (phoneOpen) phoneRun(1, 1500, showPhoneUI); }, 450);
+  }
+  function closePhone() {
+    phoneOpen = false; phTimers.forEach(clearTimeout); phTimers = [];
+    phUI.classList.remove("show"); setTimeout(function () { if (!phoneOpen) phUI.hidden = true; }, reduce ? 0 : 350);
+    if (!sceneOK) { document.body.classList.remove("open", "reading"); return; }
+    phoneRun(0, 1200, function () { document.body.classList.remove("open", "reading"); });
+    if (focusKey) leaveFocus(focusKey);
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+  $("#phclose").addEventListener("click", closePanel);
+  $("#phscr").addEventListener("click", function (e) { if (!phUI.classList.contains("unlock") && !e.target.closest("a,button")) { phTimers.forEach(clearTimeout); phTimers = []; phUI.classList.add("tapped", "unlock", "typed"); $("#phmsg").textContent = MSG; } });
+  $("#phcopy").addEventListener("click", function () {
+    var a = "lfouillade.pro@gmail.com";
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(a).then(function () { say("Adresse copiée"); }, function () { say(a); }); else say(a);
+  });
   /* Tablette : invite de commande */
   var typeTimer = null;
   function typeCmd(txt) {
@@ -1309,7 +1485,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   var cam1 = cyl(0.008, 0.008, 0.004, 0x050608, { m: 0.8 }); cam1.position.set(-0.02, -0.006, -0.055); phone.add(cam1);
   desk.add(put(box(0.14, 0.03, 0.07, 0x2a2f3a, { r: 0.5 }), 0.58, 0.795, -2.2));
   phone.scale.setScalar(1.6); phone.position.set(0.58, 0.9, -2.27); phone.rotation.set(0.95, 0, 0); // appuyé sur son support
-  reg("contact", phone, [0.58, 1.12, -2.27], [0.3, 1.25, -1.35], [0.58, 0.9, -2.27], { label: "Contact", part: "contact" });
+  reg("contact", phone, [0.58, 1.12, -2.27], [0.3, 1.25, -1.35], [0.58, 0.9, -2.27], { label: "Contact", part: "contact", center: true });
 
   var chair = new THREE.Group();
   chair.add(put(box(0.52, 0.08, 0.5, 0x2b3c6a, { r: 0.7 }), 0, 0.5, 0));
@@ -1399,6 +1575,12 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     x.fillStyle = "#2a7de1"; x.font = "italic bold 30px 'Segoe Print','Bradley Hand','Comic Sans MS',cursive"; x.fillText("Mes projets :", 640, 470);
     x.fillStyle = "#1b2a41"; x.font = "italic 26px 'Segoe Print','Bradley Hand','Comic Sans MS',cursive"; ["✓ GLPI (stage)", "✓ FOG (stage)", "✓ DHCP · VLAN · STP"].forEach(function (l, i) { x.fillText(l, 650, 515 + i * 40); });
     x.strokeStyle = "#e53b3b"; x.lineWidth = 6; x.beginPath(); x.moveTo(40, 600); x.bezierCurveTo(200, 570, 300, 630, 480, 595); x.stroke();
+    if (boardErase > 0) {
+      if (eraseMode === "wipe") {
+        var ex = w * Math.min(1, boardErase / 0.86); x.fillStyle = "#f7f8fb"; x.fillRect(0, 0, ex, h);
+        var eg = x.createLinearGradient(ex, 0, ex + 70, 0); eg.addColorStop(0, "rgba(247,248,251,0.95)"); eg.addColorStop(1, "rgba(247,248,251,0)"); x.fillStyle = eg; x.fillRect(ex, 0, 70, h);
+      } else { x.fillStyle = "rgba(247,248,251," + boardErase + ")"; x.fillRect(0, 0, w, h); }
+    }
     bt.t.needsUpdate = true;
   }
   drawBoard();
@@ -1406,7 +1588,47 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   board.add(put(box(0.06, 0.04, 1.2, 0xb8bcc6, { m: 0.6 }), 2.95, 1.15, -1.2));
   [0xe53b3b, 0x2a7de1, 0x16b27a].forEach(function (c, i) { var m = cyl(0.012, 0.012, 0.13, c); m.rotation.x = Math.PI / 2; m.position.set(2.93, 1.19, -1.5 + i * 0.12); board.add(m); });
   var eraser = box(0.04, 0.03, 0.11, 0x2a3a78); eraser.position.set(2.93, 1.185, -0.8); board.add(eraser);
-  reg("synthese", board, [2.9, 2.5, -1.2], [1.0, 1.72, -1.2], [2.95, 1.72, -1.2], { label: "Synthèse", center: true, fov: 62 });
+  reg("synthese", board, [2.9, 2.5, -1.2], [1.05, 1.75, -1.2], [2.945, 1.75, -1.2], { label: "Synthèse", center: true, fov: 34, fovN: 62 });
+  /* téléphone pris en main */
+  var PH_P = new THREE.Vector3(0.58, 0.9, -2.27), PH_Q = new THREE.Quaternion().setFromEuler(new THREE.Euler(0.95, 0, 0)), PH_FACE = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), Math.PI / 2);
+  var pk = 0, pkTw = null, phA = new THREE.Vector3(), phB = new THREE.Vector3(), phQ = new THREE.Quaternion();
+  function phoneRun(to, dur, cb) { pkTw = { from: pk, to: to, t0: performance.now(), dur: reduce ? 0 : dur, cb: cb }; }
+  function applyPhone(now) {
+    if (pkTw) { var p = pkTw.dur ? Math.min(1, (now - pkTw.t0) / pkTw.dur) : 1; pk = pkTw.from + (pkTw.to - pkTw.from) * p; if (p >= 1) { var cb = pkTw.cb; pkTw = null; if (cb) cb(); } }
+    if (pk <= 0) { if (phone.userData.held) { phone.userData.held = false; phone.position.copy(PH_P); phone.quaternion.copy(PH_Q); } return; }
+    phone.userData.held = true;
+    var lift = ease(Math.min(1, pk / 0.25)), tr = ease(Math.max(0, (pk - 0.18) / 0.82)), ts = now / 1000;
+    phA.copy(PH_P); phA.y += 0.1 * lift; phA.z += 0.04 * lift;
+    phB.set(Math.sin(ts * 1.1) * 0.0025, -0.012 + Math.sin(ts * 1.7) * 0.002, -0.3).applyQuaternion(camera.quaternion).add(camera.position);
+    phone.position.copy(phA).lerp(phB, tr);
+    phQ.copy(camera.quaternion).multiply(PH_FACE);
+    phone.quaternion.copy(PH_Q).slerp(phQ, tr);
+  }
+  var phC = [new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3(), new THREE.Vector3()];
+  function placePhone() {
+    if (!phoneOpen || phUI.hidden) return;
+    var w = window.innerWidth, h = window.innerHeight, minX = 1e9, minY = 1e9, maxX = -1e9, maxY = -1e9;
+    [[-0.0335, -0.067], [0.0335, -0.067], [-0.0335, 0.067], [0.0335, 0.067]].forEach(function (c, i) {
+      phC[i].set(c[0], 0.0052, c[1]); phone.localToWorld(phC[i]); phC[i].project(camera);
+      var x = (phC[i].x * 0.5 + 0.5) * w, y = (-phC[i].y * 0.5 + 0.5) * h; minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+    });
+    var s = $("#phscr").style; s.left = minX.toFixed(1) + "px"; s.top = minY.toFixed(1) + "px"; s.width = (maxX - minX).toFixed(1) + "px"; s.height = (maxY - minY).toFixed(1) + "px"; s.fontSize = ((maxY - minY) / 34).toFixed(2) + "px";
+  }
+  /* tableau : gomme */
+  var boardErase = 0, eraseMode = "wipe", erTw = null, ERASER_HOME = new THREE.Vector3(2.93, 1.185, -0.8);
+  function eraseRun(to, dur, mode) { eraseMode = mode; erTw = { from: boardErase, to: to, t0: performance.now(), dur: reduce ? 0 : dur }; }
+  function applyEraser(now) {
+    if (!erTw) return;
+    var p = erTw.dur ? Math.min(1, (now - erTw.t0) / erTw.dur) : 1; boardErase = erTw.from + (erTw.to - erTw.from) * p;
+    if (eraseMode === "wipe") {
+      var e = Math.min(1, boardErase / 0.86), bz = -2.1 + e * 1.8, by = 1.75 + Math.sin(e * Math.PI * 9) * 0.4;
+      if (boardErase < 0.86) { eraser.position.set(2.915, by, bz); eraser.rotation.set(Math.PI / 2, 0, Math.sin(e * 40) * 0.15); }
+      else { var k = (boardErase - 0.86) / 0.14; eraser.position.set(2.915, by, bz).lerp(ERASER_HOME, ease(k)); eraser.rotation.set(Math.PI / 2 * (1 - k), 0, 0); }
+    }
+    if (p >= 1) { erTw = null; eraser.position.copy(ERASER_HOME); eraser.rotation.set(0, 0, 0); }
+    drawBoard();
+  }
+
 
   /* --- Bibliothèque (mur droit) + livre de veille --- */
   var shelf = new THREE.Group();
@@ -1832,6 +2054,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   }
   function leaveFocus(key) {
     var o = OBJ[key]; var a = angles(HOME, o.target); focused = null; focusKey = null;
+    if (key === "synthese" && boardErase > 0) eraseRun(0, 900, "fade");
     goTo({ pos: HOME.clone(), yaw: a.yaw, pitch: -0.05, fov: 70 }, key === "projets" ? 1500 : 1100);
     if (tw && key === "projets") tw.ylead = true;
   }
@@ -1888,9 +2111,10 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   });
   var tmp = new THREE.Vector3(), pcA = new THREE.Vector3(), pcB = new THREE.Vector3(), pcOn = false;
   function placePC() {
-    var on = current === "projets" && panel.dataset.mode === "pc" && window.innerWidth > 820;
+    var md = panel.dataset.mode, on = !panel.hidden && window.innerWidth > 820 && (md === "pc" || md === "board");
     if (!on) { if (pcOn) { panel.style.left = panel.style.top = panel.style.width = panel.style.height = ""; panel.classList.remove("onscreen"); pcOn = false; } return; }
-    pcA.set(-0.47, 1.49, -2.716).project(camera); pcB.set(0.47, 0.95, -2.716).project(camera);
+    if (md === "pc") { pcA.set(-0.47, 1.49, -2.716); pcB.set(0.47, 0.95, -2.716); } else { pcA.set(2.944, 2.27, -2.15); pcB.set(2.944, 1.23, -0.25); }
+    pcA.project(camera); pcB.project(camera);
     var w = window.innerWidth, h = window.innerHeight;
     var x1 = (pcA.x * 0.5 + 0.5) * w, y1 = (-pcA.y * 0.5 + 0.5) * h, x2 = (pcB.x * 0.5 + 0.5) * w, y2 = (-pcB.y * 0.5 + 0.5) * h;
     panel.style.left = Math.min(x1, x2).toFixed(1) + "px"; panel.style.top = Math.min(y1, y2).toFixed(1) + "px";
@@ -1937,6 +2161,8 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     if (Math.abs(camera.fov - cam.fov) > 0.01) { camera.fov = cam.fov; camera.updateProjectionMatrix(); }
     camera.updateMatrixWorld();
     applyBook();
+    applyPhone(now);
+    applyEraser(now);
     if (!reduce && focused === "projets" && chairK > 0.85) {
       var ts = now / 1000;
       cam.pos.y = 1.22 + Math.sin(ts * 1.7) * 0.0035; cam.pos.x = Math.sin(ts * 0.8) * 0.006;
@@ -1963,7 +2189,8 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
       // téléphone : vibre et s'allume de temps en temps
       if (now > nextBuzz && buzzT < 0) { buzzT = now; nextBuzz = now + 9000 + Math.random() * 6000; }
       var lit = false;
-      if (buzzT >= 0) { var bt2 = (now - buzzT) / 1000; if (bt2 < 1.6) { lit = true; phone.position.x = 0.58 + Math.sin(bt2 * 90) * 0.0016 * (bt2 < 0.7 ? 1 : 0); phone.position.z = -2.27 + Math.cos(bt2 * 83) * 0.0012 * (bt2 < 0.7 ? 1 : 0); phoneLight.intensity = 0.6 * (1 - bt2 / 1.6); } else { buzzT = -1; phone.position.set(0.58, 0.9, -2.27); phoneLight.intensity = 0; } }
+      if (buzzT >= 0) { var bt2 = (now - buzzT) / 1000; if (bt2 < 1.6) { lit = true; if (pk === 0) { phone.position.x = 0.58 + Math.sin(bt2 * 90) * 0.0016 * (bt2 < 0.7 ? 1 : 0); phone.position.z = -2.27 + Math.cos(bt2 * 83) * 0.0012 * (bt2 < 0.7 ? 1 : 0); } phoneLight.intensity = 0.6 * (1 - bt2 / 1.6); } else { buzzT = -1; if (pk === 0) phone.position.set(0.58, 0.9, -2.27); phoneLight.intensity = 0; } }
+      if (pk > 0) lit = true;
       if (now - lastPhoneDraw > 1000 || lit !== phone.userData.lit) { lastPhoneDraw = now; phone.userData.lit = lit; drawPhone(now, lit); }
       // sac de frappe, plante, rideaux, buée, poussière, ventilos, lampe
       speedG.rotation.x = Math.sin(t * 7) * 0.22 * (0.6 + 0.4 * Math.sin(t * 0.9)); speedG.rotation.z = Math.cos(t * 5) * 0.06;
@@ -1988,6 +2215,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     if (mouse.has && !drag && !focused && ENTERED) setHover(pick(mouse.px, mouse.py));
     placeTags();
     placePC();
+    placePhone();
     renderer.render(scene, camera);
     if (!ready) { ready = true; $("#load").classList.add("gone"); }
     requestAnimationFrame(frame);
