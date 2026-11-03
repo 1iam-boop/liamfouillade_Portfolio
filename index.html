@@ -1832,9 +1832,6 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   [-1, 1].forEach(function (s) { var wing = seatPart(0.07, 0.5, 0.12, 0.03, FAB); wing.position.set(s * 0.215, 0.33, -0.035); wing.rotation.y = s * 0.28; backG.add(wing); backG.add(put(seatPart(0.022, 0.62, 0.095, 0.009, ACC), s * 0.15, 0.45, -0.003)); });
   backG.add(put(seatPart(0.26, 0.12, 0.07, 0.035, ACC), 0, 0.72, -0.075)); backG.add(put(seatPart(0.28, 0.12, 0.07, 0.035, ACC), 0, 0.14, -0.075));
   // sweat à capuche posé sur le dossier
-  var hoodie = new THREE.Group(); hoodie.add(put(rbox(0.5, 0.36, 0.03, 0.014, 0x5f6672, { r: 0.95 }), 0, 0.66, 0.065)); hoodie.add(put(rbox(0.5, 0.1, 0.12, 0.03, 0x5f6672, { r: 0.95 }), 0, 0.82, 0.01));
-  hoodie.add(put(sph(0.1, 0x5f6672, { r: 0.95 }, 1.3, 0.75, 0.9), 0, 0.77, 0.08)); [-1, 1].forEach(function (s) { var sl = rbox(0.09, 0.42, 0.06, 0.025, 0x5f6672, { r: 0.95 }); sl.position.set(s * 0.25, 0.58, 0.02); sl.rotation.z = s * 0.06; hoodie.add(sl); });
-  backG.add(hoodie);
   [-1, 1].forEach(function (s) {
     chair.add(put(box(0.035, 0.2, 0.05, 0x15181f, { m: 0.5 }), s * 0.29, 0.63, 0.06)); chair.add(put(box(0.03, 0.03, 0.22, 0x15181f, { m: 0.5 }), s * 0.27, 0.535, 0.04));
     chair.add(put(rbox(0.085, 0.035, 0.27, 0.015, 0x15181f, { r: 0.7 }), s * 0.29, 0.745, 0.03));
@@ -2361,17 +2358,13 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   var bar = cyl(0.014, 0.014, 1.9, 0xc9ccd4, { m: 0.95, r: 0.2 }); bar.rotation.z = Math.PI / 2; bar.position.set(2.48, 1.1, 2.7); sport.add(bar);
   [[-0.86, 0.22], [-0.82, 0.19], [0.86, 0.22], [0.82, 0.19]].forEach(function (p) { var pl = cyl(p[1], p[1], 0.03, 0x15161a, { r: 0.6 }, 28); pl.rotation.z = Math.PI / 2; pl.position.set(2.48 + p[0], 1.1, 2.7); sport.add(pl); var cl = cyl(0.03, 0.03, 0.04, 0xc4161c); cl.rotation.z = Math.PI / 2; cl.position.set(2.48 + p[0] * 1.07, 1.1, 2.7); sport.add(cl); });
   // haltères au sol, kettlebell, tapis, gourde
-  [[1.5, 2.55, 0.22], [1.78, 2.5, 0.3], [2.05, 2.52, 0.4]].forEach(function (d, i) { var dg = new THREE.Group(); dg.add(put(cyl(0.012, 0.012, 0.16, 0xb9bcc4, { m: 0.9 }), 0, 0, 0)); [-0.09, 0.09].forEach(function (x) { var hd = cyl(0.05 + i * 0.012, 0.05 + i * 0.012, 0.045, 0x15161a, { r: 0.5 }, 6); hd.rotation.z = Math.PI / 2; hd.position.x = x; dg.add(hd); }); dg.children[0].rotation.z = Math.PI / 2; dg.position.set(d[0], 0.06 + i * 0.012, d[1]); dg.rotation.y = 0.2 * i; sport.add(dg); });
-  var kb = new THREE.Group(); kb.add(put(sph(0.1, 0x15161a, { r: 0.5, m: 0.4 }), 0, 0.1, 0)); var kh = tor(0.055, 0.012, 0x15161a, { r: 0.5, m: 0.4 }); kh.position.y = 0.22; kb.add(kh); kb.position.set(1.4, 0, 2.3); sport.add(kb);
   var matM = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.6, 20), mat(0x3d8bff, { r: 0.8 })); matM.rotation.z = Math.PI / 2; matM.position.set(2.7, 0.07, 2.2); matM.rotation.y = 0.3; matM.castShadow = true; sport.add(matM);
   var bottle = cyl(0.03, 0.03, 0.2, 0x35b8ff, { r: 0.3 }); bottle.position.set(2.7, 0.1, 1.9); sport.add(bottle); var cap = cyl(0.025, 0.025, 0.03, 0x111214); cap.position.set(2.7, 0.215, 1.9); sport.add(cap);
   // chaussures de running
-  function shoe(x, z, ry) { var s2 = new THREE.Group(); var sole = box(0.3, 0.035, 0.11, 0xf2f2f6, { r: 0.6 }); s2.add(sole); var up = sph(0.1, 0x35ff7a, { r: 0.6 }, 1.3, 0.5, 0.55); up.position.set(-0.03, 0.06, 0); s2.add(up); var toe = sph(0.06, 0x35ff7a, { r: 0.6 }, 1.2, 0.5, 0.9); toe.position.set(0.09, 0.04, 0); s2.add(toe); var sw3 = box(0.12, 0.012, 0.115, 0xff4fa3); sw3.position.set(0, 0.03, 0); sw3.rotation.z = 0.1; s2.add(sw3); s2.position.set(x, 0.02, z); s2.rotation.y = ry; return s2; }
-  sport.add(shoe(1.5, 1.95, 0.5), shoe(1.65, 2.1, 0.35));
   scene.add(sport);
   // 1 clé, plusieurs lots : on enregistre le groupe sport pour le survol et le clic
   reg("sport", sport, [2.1, 2.3, 2.0], [0.5, 1.45, 0.3], [2.1, 1.1, 2.4], { label: "Sport", part: "passions", scroll: "#p-sport", noclick: true });
-  blob(2.1, 2.0, 0.45, 0.45, 0.3); blob(2.48, 2.7, 1.1, 0.4, 0.35); blob(1.6, 2.3, 0.4, 0.4, 0.3);
+  blob(2.1, 2.0, 0.45, 0.45, 0.3); blob(2.48, 2.7, 1.1, 0.4, 0.35);
 
   /* ===== Décor détaillé ===== */
   function adopt(key, g) {
@@ -2414,19 +2407,13 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   [[-0.12, -0.35], [0.12, -0.35], [-0.12, 0.4], [0.12, 0.4]].forEach(function (o) { bench.add(put(box(0.04, 0.4, 0.04, 0x20242c, { m: 0.6 }), o[0], 0.2, o[1])); });
   bench.add(put(box(0.31, 0.04, 0.6, 0xc4161c, { r: 0.6 }), 0, 0.51, 0.1));
   var towel = box(0.28, 0.02, 0.3, 0xffffff, { r: 0.95 }); towel.position.set(0, 0.52, -0.1); towel.rotation.y = 0.2; bench.add(towel); bench.position.set(-0.7, 0, 2.2); bench.rotation.y = 0.35; adopt("sport", bench);
-  [[-0.3, 1.1, 0.4, 0x15181f, 1], [0.15, 1.35, 1.7, 0x15181f, 0.8], [0.9, 0.7, 0.2, 0xc4161c, 1.1], [-1.2, 0.25, 2.3, 0x35b8ff, 0.9], [1.1, 2.0, 0.8, 0x15181f, 1], [0.4, 2.65, 0.5, 0xc4161c, 0.8], [-0.1, 2.75, 1.4, 0x15181f, 1]].forEach(function (d) { adopt("sport", dumbbell(d[0], d[1], d[2], d[3], d[4])); });
-  adopt("sport", plateStack(1.3, 2.75, 5, 0.2, 0x15181f)); adopt("sport", plateStack(1.0, 2.8, 3, 0.15, 0xc4161c)); adopt("sport", plateStack(0.65, 2.75, 4, 0.12, 0x2a2f38));
-  var gbag = new THREE.Group(); var gbm = cyl(0.14, 0.14, 0.55, 0x15181f, { r: 0.7 }); gbm.rotation.z = Math.PI / 2; gbm.position.y = 0.14; gbag.add(gbm); var gbs = box(0.4, 0.015, 0.06, 0xc4161c); gbs.position.set(0, 0.28, 0); gbag.add(gbs); var gbh = tor(0.1, 0.01, 0x15181f, { r: 0.7 }, Math.PI); gbh.position.set(0, 0.28, 0); gbag.add(gbh); gbag.position.set(0.15, 0, 2.55); gbag.rotation.y = 0.5; adopt("sport", gbag);
-  var shk = cyl(0.04, 0.035, 0.2, 0xe8e8f0, { r: 0.2 }); shk.position.set(0.45, 0.1, 2.35); adopt("sport", shk); var shkc = cyl(0.042, 0.042, 0.04, 0x15181f); shkc.position.set(0.45, 0.22, 2.35); adopt("sport", shkc);
+  [[-0.3, 1.1, 0.4, 0x15181f, 1], [0.15, 1.35, 1.7, 0x15181f, 0.8], [0.9, 0.7, 0.2, 0xc4161c, 1.1], [-1.2, 0.25, 2.3, 0x35b8ff, 0.9]].forEach(function (d) { adopt("sport", dumbbell(d[0], d[1], d[2], d[3], d[4])); });
   var foam = cyl(0.07, 0.07, 0.6, 0x8a5aff, { r: 0.8 }); foam.rotation.z = Math.PI / 2; foam.rotation.y = 0.4; foam.position.set(-0.1, 0.07, 1.9); adopt("sport", foam);
-  var ropeG = new THREE.Group(); var ropeC = new THREE.CatmullRomCurve3([new THREE.Vector3(-0.2, 0.02, 0), new THREE.Vector3(-0.1, 0.02, 0.12), new THREE.Vector3(0.05, 0.02, -0.1), new THREE.Vector3(0.18, 0.02, 0.1), new THREE.Vector3(0.3, 0.02, 0)]);
-  ropeG.add(new THREE.Mesh(new THREE.TubeGeometry(ropeC, 30, 0.006, 6, false), mat(0xffd23f, { r: 0.6 }))); [-0.2, 0.3].forEach(function (x) { var hd = cyl(0.014, 0.014, 0.12, 0xc4161c); hd.position.set(x, 0.06, 0); ropeG.add(hd); });
-  ropeG.position.set(0.7, 0, 2.0); ropeG.rotation.y = 0.6; adopt("sport", ropeG);
   var speedG = new THREE.Group(); var plat = cyl(0.17, 0.17, 0.02, 0x6d4b2c, { r: 0.6 }, 24); plat.rotation.x = Math.PI / 2; plat.position.set(-0.4, 1.7, 2.9); adopt("sport", plat);
   var spB = sph(0.075, 0xc4161c, { r: 0.35 }); spB.position.set(0, -0.2, 0); speedG.add(spB); var spS = cyl(0.003, 0.003, 0.2, 0xb9bcc4, { m: 0.9 }); spS.position.set(0, -0.1, 0); speedG.add(spS); speedG.position.set(-0.4, 1.68, 2.82); adopt("sport", speedG);
   var mitts = new THREE.Group(); [0, 0.2].forEach(function (x) { var mt2 = cyl(0.08, 0.08, 0.03, 0xc4161c, { r: 0.5 }); mt2.rotation.x = Math.PI / 2; mt2.position.set(x, 0, 0); mitts.add(mt2); var mt3 = cyl(0.04, 0.04, 0.034, 0x15181f); mt3.rotation.x = Math.PI / 2; mt3.position.set(x, 0, 0); mitts.add(mt3); }); mitts.position.set(-1.15, 1.45, 2.95); adopt("sport", mitts);
   var bands = new THREE.Group(); [[0xc4161c, 0], [0x35b8ff, 0.03], [0xffd23f, 0.06]].forEach(function (c) { var tb = tor(0.07, 0.008, c[0], { r: 0.6 }); tb.position.set(0, -c[1] - 0.06, 0.0); bands.add(tb); }); bands.position.set(-0.7, 1.55, 2.96); adopt("sport", bands);
-  blob(-0.7, 2.2, 0.35, 0.65, 0.35); blob(0.15, 2.55, 0.35, 0.25, 0.3); blob(1.1, 2.78, 0.5, 0.25, 0.35);
+  blob(-0.7, 2.2, 0.35, 0.65, 0.35);
 
   // --- Bureau : webcam, notes, canard, mini-plante, ventilateur, SSD
   var dk = new THREE.Group();
@@ -2891,7 +2878,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
       if (now - lastPhoneDraw > 1000 || lit !== phone.userData.lit) { lastPhoneDraw = now; phone.userData.lit = lit; drawPhone(now, lit); }
       // sac de frappe, plante, rideaux, buée, poussière, ventilos, lampe
       speedG.rotation.x = Math.sin(t * 7) * 0.22 * (0.6 + 0.4 * Math.sin(t * 0.9)); speedG.rotation.z = Math.cos(t * 5) * 0.06;
-      ropeG.rotation.z = Math.sin(t * 0.7) * 0.03; duck.position.y = 0.845 + Math.sin(t * 2.2) * 0.003; duck.rotation.z = Math.sin(t * 2.2) * 0.06;
+      duck.position.y = 0.845 + Math.sin(t * 2.2) * 0.003; duck.rotation.z = Math.sin(t * 2.2) * 0.06;
       fanBl.rotation.z = t * 18; fanHead.rotation.y = Math.sin(t * 0.6) * 0.5;
       fairy.forEach(function (f, i) { var on = Math.sin(t * 2.4 + i * 1.7) > -0.2; f.m.color.setHex(on ? f.c : 0x2a2433); f.o.scale.setScalar(on ? 1 : 0.7); });
       if (now - lastTab > 70) { lastTab = now; var LT = TLN[tIdx]; if (tTyped < LT[1].length) tTyped++; else { tHold += 70; if (tHold > (LT[1] === "" ? 3500 : 450)) { tHold = 0; if (tIdx < TLN.length - 1) { tIdx++; tTyped = 0; } else { tIdx = 0; tTyped = 0; } } } drawTab(now); }
