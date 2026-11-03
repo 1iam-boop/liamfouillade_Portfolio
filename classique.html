@@ -281,35 +281,82 @@
 
   <section id="veille">
     <h2><span class="num">05</span> Veille technologique</h2>
-    <p class="sub">Ma veille suit ce que j’installe et exploite en projet : maintenir des services à jour et fiables.</p>
-    <div class="grid3">
-      <article class="card">
-        <h3>Thème</h3>
-        <p>Disponibilité et maintien en conditions opérationnelles des infrastructures : compatibilité des versions, redondance réseau, sécurisation après installation.</p>
-      </article>
-      <article class="card">
-        <h3>Sources</h3>
-        <ul class="plain">
-          <li>IT-Connect (tutoriels et actualités systèmes et réseaux)</li>
-          <li>Documentation Cisco (protocole Spanning Tree, document 10543)</li>
-          <li>Journaux Apache, PHP et GLPI lors des diagnostics</li>
-        </ul>
-      </article>
-      <article class="card">
-        <h3>Méthode</h3>
-        <p>Je pars d’un problème réel d’un projet, je cherche dans les sources, puis je vérifie par un test sur la maquette avant de l’écrire dans ma documentation.</p>
-      </article>
-    </div>
-    <h3 class="subh">Exemples issus de mes projets</h3>
+    <p class="sub">Thème : l’intelligence artificielle au service de la cybersécurité. Sources consultées le 3 novembre 2026.</p>
     <div class="grid2">
-      <article class="card">
-        <h4>Choisir la bonne version de PHP</h4>
-        <p>GLPI n’est pas garanti compatible avec toutes les versions de PHP. La version par défaut de Debian 13 ne convenait pas : j’ai installé PHP 8.2 depuis le dépôt Sury, après avoir vérifié la compatibilité.</p>
-      </article>
-      <article class="card">
-        <h4>Du STP au RSTP</h4>
-        <p>Pendant le TP, la reconvergence de STP a coûté 10 pings perdus (30 à 50 s). En entreprise on utilise plutôt RSTP (802.1w), qui reconverge en quelques secondes, activé avec <code>spanning-tree mode rapid-pvst</code> sur Cisco.</p>
-      </article>
+<article class="card"><h3>Fiche de veille</h3>
+  
+  
+  <dl class="fiche">
+    <dt>Problématique</dt><dd>L’IA change-t-elle l’équilibre entre ceux qui attaquent et ceux qui défendent un système d’information ?</dd>
+    <dt>Trois angles</dt><dd>Le cadre de l’ANSSI distingue la cybersécurité <b>par</b> l’IA (se défendre avec), la cybersécurité <b>face à</b> l’IA (se protéger d’attaques qui l’utilisent) et la cybersécurité <b>de</b> l’IA (protéger les systèmes d’IA eux-mêmes).</dd>
+    <dt>Pourquoi ce thème</dt><dd>Il relie mon bloc 3 (cybersécurité) à ce que je fais en projet : exploiter des journaux, sécuriser des accès et des services.</dd>
+    <dt>Auteur · date</dt><dd>Liam Fouillade · sources consultées le 3 novembre 2026</dd>
+  </dl>
+</article>
+<article class="card"><h3>Sources</h3>
+  
+  
+  <ul class="src">
+    <li><b>ANSSI</b>, page « Intelligence artificielle » (cyber.gouv.fr). Elle renvoie à la <i>Synthèse de la menace sur l’IA générative face aux attaques informatiques</i> (CERTFR-2026-CTI-001, 4 février 2026) et aux <i>Recommandations de sécurité pour un système d’IA générative</i> (29 avril 2024). <span class="fi hi">Source officielle, fiabilité élevée</span><br><a href="https://cyber.gouv.fr/enjeux-technologiques/intelligence-artificielle/" target="_blank" rel="noopener">cyber.gouv.fr/enjeux-technologiques/intelligence-artificielle</a></li>
+    <li><b>Silicon.fr</b>, « IA générative : la nouvelle arme cyber qui inquiète l’ANSSI », 5 février 2026 (mis à jour le 5 mars). <span class="fi mid">Presse spécialisée, reprend le rapport de l’ANSSI</span><br><a href="https://www.silicon.fr/cybersecurite-1371/ia-generative-la-nouvelle-arme-cyber-qui-inquiete-lanssi-225573" target="_blank" rel="noopener">silicon.fr</a></li>
+    <li><b>Ayinedjimi Consultants</b>, « Agents IA pour le SOC : triage automatisé des alertes », 13 février 2026. <span class="fi low">Blog de cabinet de conseil : plusieurs chiffres sans source précise, je ne retiens que les principes</span><br><a href="https://ayinedjimi-consultants.fr/articles/ia-agents-soc-triage-alertes" target="_blank" rel="noopener">ayinedjimi-consultants.fr</a></li>
+  </ul>
+</article>
+<article class="card"><h3>Synthèse 1</h3>
+  
+  
+  <p>L’ANSSI sépare les enjeux de l’IA en trois familles : la cybersécurité <b>de</b> l’IA, la cybersécurité <b>par</b> l’IA et la cybersécurité <b>face à</b> l’IA. Elle souligne que les usages malveillants de l’IA rendent la défense plus complexe.</p>
+  <p>Son approche repose sur les risques : appliquer les règles de sécurité existantes et en écrire de nouvelles adaptées aux systèmes d’IA. Côté réglementation, le règlement européen sur l’IA a été publié au Journal officiel de l’Union européenne le 12 juillet 2024 ; ses aspects cyber relèvent de la normalisation européenne, où l’ANSSI apporte une assistance technique.</p>
+  <p class="take"><b>Ce que j’en retiens :</b> l’IA n’est pas qu’un outil de défense. C’est aussi une menace et un système à protéger.</p>
+</article>
+<article class="card"><h3>Synthèse 2</h3>
+  
+  
+  <p>D’après l’article de Silicon.fr qui reprend le rapport de l’ANSSI :</p>
+  <ul>
+    <li><b>Hameçonnage</b> multilingue généré par IA, avec des cibles en France (groupe lié à la Chine, Charcoal Typhoon).</li>
+    <li><b>Faux profils</b> et repérage de cibles (groupes liés à l’Iran et à la Corée du Nord).</li>
+    <li><b>Code malveillant</b> : un script PowerShell généré par un LLM (groupe TA547) et des prototypes qui réécrivent leur code (PromptLock, Promptflux).</li>
+    <li><b>Deepfakes</b> bon marché pour l’usurpation d’identité, et IA « sans limites » vendues sur des forums (WormGPT, FraudGPT).</li>
+  </ul>
+  <p class="take"><b>Ce qui n’est pas observé :</b> aucune attaque entièrement autonome contre des cibles françaises, aucun cas avéré de faille inconnue découverte par une IA, aucun incident majeur d’empoisonnement de modèle.</p>
+</article>
+<article class="card"><h3>Synthèse 3</h3>
+  
+  
+  <p>Un agent IA se place entre le SIEM et l’outil d’automatisation (SOAR). Il extrait les éléments de l’alerte, les enrichit avec de la veille sur les menaces, les rapproche des techniques MITRE ATT&amp;CK, puis classe l’alerte : vrai positif, faux positif ou revue humaine.</p>
+  <p><b>Limites citées :</b> hallucinations, faux négatifs (un vrai incident classé à tort), dérive des performances dans le temps, confidentialité des données et conformité (RGPD, règlement sur l’IA, NIS2, DORA).</p>
+  <p><b>Garde-fous :</b> un binôme analyste-agent, une revue humaine pour les cas incertains et avant toute action irréversible, un journal d’audit, un déploiement progressif en mode « observation ».</p>
+  <p class="note">Les chiffres de gain de temps de l’article ne sont pas sourcés : je ne les retiens pas.</p>
+</article>
+<article class="card"><h3>Synthèse 4</h3>
+  
+  
+  <p>Les systèmes d’IA deviennent des cibles. L’article cite l’empoisonnement des données d’entraînement, les portes dérobées, les modèles open source compromis, les failles de serveurs MCP, le « slopsquatting » (des paquets inventés par une IA et piégés par des attaquants) et plus de 100 000 comptes ChatGPT compromis.</p>
+  <p>L’ANSSI a publié le 29 avril 2024 des <i>Recommandations de sécurité pour un système d’IA générative</i> (version anglaise le 27 septembre 2024).</p>
+  <p class="take"><b>Ce que j’en retiens :</b> utiliser une IA avec les données d’une organisation, c’est ajouter un service à sécuriser et à encadrer, comme n’importe quel autre.</p>
+</article>
+<article class="card"><h3>Lien avec mes projets</h3>
+  
+  
+  <ul>
+    <li><b>Hameçonnage plus crédible :</b> les accès restent la première défense. Sur GLPI, j’ai changé les mots de passe par défaut et limité les droits.</li>
+    <li><b>Journaux :</b> en dépannant GLPI et FOG, j’ai diagnostiqué avec les journaux Apache et PHP. Une IA peut aider à les trier, mais je dois comprendre ce qu’ils disent pour vérifier sa réponse.</li>
+    <li><b>Données :</b> envoyer des journaux ou des configurations à un service d’IA externe pose une question de confidentialité.</li>
+  </ul>
+  <p class="take"><b>Compétences du bloc 3 concernées :</b> sécuriser les équipements et les usages, garantir la disponibilité, l’intégrité et la confidentialité, assurer la cybersécurité d’une infrastructure.</p>
+</article>
+<article class="card"><h3>Conclusion</h3>
+  
+  
+  <p>Selon les sources consultées, l’IA accélère surtout des attaques qui existaient déjà (hameçonnage, faux profils, code) et aide les équipes à trier l’information. L’automatisation complète d’une attaque est jugée envisageable à court ou moyen terme, mais n’est pas observée en France à ce jour. L’humain reste indispensable pour décider.</p>
+  <h4>Pour la suite</h4>
+  <ul>
+    <li>Lire les prochaines publications de l’ANSSI et du CERT-FR sur le sujet.</li>
+    <li>Essayer, sur une maquette sans donnée réelle, un outil d’aide à l’analyse de journaux et comparer avec mon diagnostic manuel.</li>
+  </ul>
+  <p class="fin">Fin de la fiche · merci d’avoir lu</p>
+</article>
     </div>
   </section>
 
@@ -339,14 +386,23 @@
     </ol>
   </section>
 
+  <section id="passions">
+    <h2><span class="num">06b</span> Passions</h2>
+    <div class="grid2">
+      <article class="card"><h3>La moto</h3><p>Rouler demande de l’attention, de l’anticipation et de la rigueur. Je retrouve la même méthode quand je dépanne une machine.</p></article>
+      <article class="card"><h3>Musculation, boxe et course</h3><p>De la régularité, du calme sous pression, et l’habitude de finir ce que je commence.</p></article>
+    </div>
+  </section>
+
   <section id="contact">
     <h2><span class="num">07</span> Contact</h2>
     <p class="sub">Je cherche un stage ou une alternance de technicien systèmes et réseaux.</p>
     <div class="contact">
       <a class="btn primary" id="mail" href="mailto:lfouillade.pro@gmail.com">lfouillade.pro@gmail.com</a>
       <button class="btn" id="copy" type="button">Copier l’adresse</button>
-      <a class="btn" href="https://github.com/1iam-boop" target="_blank" rel="noopener">GitHub</a>
-          </div>
+      <!-- <a class="btn" href="https://github.com/TON-PSEUDO">GitHub</a> -->
+      <!-- <a class="btn" href="CV_Liam_Fouillade.pdf" download>Télécharger mon CV</a> -->
+    </div>
   </section>
 </main>
 
