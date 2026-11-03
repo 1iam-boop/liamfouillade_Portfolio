@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liam Fouillade — Systèmes & Réseaux</title>
+<meta name="description" content="Portfolio de Liam Fouillade, étudiant en BTS SIO option SISR : GLPI, FOG, DHCP, VLAN, Spanning Tree.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f1720'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' text-anchor='middle' fill='%23f5a623'%3E%3E_%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#projets">Aller aux projets</a>
+<div id="progress" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="#top" aria-label="Accueil"><span class="prompt">&gt;_</span> liam.fouillade</a>
+  <nav aria-label="Navigation principale">
+    <a href="#apropos">À propos</a>
+    <a href="#competences">Compétences</a>
+    <a href="#projets">Projets</a>
+    <a href="#synthese">Synthèse</a>
+    <a href="#veille">Veille</a>
+    <a href="#parcours">Parcours</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button id="theme" class="theme" type="button" aria-label="Changer de thème">◐</button>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <p class="eyebrow">Portfolio de compétences · BTS SIO option SISR · 2<sup>e</sup> année</p>
+    <h1>Liam Fouillade<span class="cursor" aria-hidden="true">_</span></h1>
+    <p class="lead">Futur technicien <strong>systèmes et réseaux</strong>. J’installe, je configure et je dépanne des infrastructures, puis je documente ce que j’ai fait pour que quelqu’un d’autre puisse le refaire.</p>
+    <div class="cta">
+      <a class="btn primary" href="#projets">Voir mes projets</a>
+      <a class="btn" href="mailto:lfouillade.pro@gmail.com">Me contacter</a>
+    </div>
+    <dl class="facts">
+      <div><dt>Stage</dt><dd>Mairie de Chauray<br>mai – juin 2026</dd></div>
+      <div><dt>Recherche</dt><dd>Stage / alternance<br>technicien systèmes & réseaux</dd></div>
+      <div><dt>Localisation</dt><dd>Champs-sur-Marne (77)</dd></div>
+    </dl>
+  </section>
+
+  <section id="apropos">
+    <h2><span class="num">01</span> À propos</h2>
+    <div class="two">
+      <p>Étudiant en BTS Services Informatiques aux Organisations au lycée Charles de Foucauld depuis septembre 2025, je me spécialise dans les <strong>solutions d’infrastructure, systèmes et réseaux</strong>. Je débute en cybersécurité, réseaux et systèmes, et j’apprends surtout en montant des maquettes et en les faisant tomber pour comprendre pourquoi.</p>
+      <p>Mon stage à la mairie de Chauray m’a permis de mener deux projets de bout en bout : un serveur de gestion de parc <strong>GLPI</strong> et un déploiement de masse de Windows 11 avec <strong>FOG</strong>. Je diagnostique à partir des journaux plutôt qu’au hasard, et je rédige une documentation que quelqu’un d’autre peut suivre.</p>
+    </div>
+  </section>
+
+  <section id="competences">
+    <h2><span class="num">02</span> Compétences techniques</h2>
+    <div class="grid3">
+      <article class="card">
+        <h3>Systèmes</h3>
+        <ul class="tags">
+          <li>Debian 13</li><li>Windows Server 2022</li><li>Windows 10 / 11</li><li>Apache2</li><li>PHP-FPM</li><li>MariaDB / MySQL</li><li>VMware Workstation</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Réseaux</h3>
+        <ul class="tags">
+          <li>DHCP</li><li>PXE / TFTP</li><li>VLAN 802.1Q</li><li>Routage inter-VLAN</li><li>Spanning Tree</li><li>Cisco IOS</li><li>Packet Tracer</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Outils & code</h3>
+        <ul class="tags">
+          <li>GLPI</li><li>FOG</li><li>Chocolatey</li><li>Python</li><li>SQL</li><li>HTML / CSS</li><li>GitHub</li>
+        </ul>
+      </article>
+    </div>
+    <p class="note"><strong>Savoir-être :</strong> curiosité, résilience, adaptabilité, travail en équipe, proactivité. <strong>Langues :</strong> anglais B2, espagnol B1.</p>
+  </section>
+
+  <section id="projets">
+    <h2><span class="num">03</span> Projets</h2>
+    <p class="sub">Deux projets de stage en conditions réelles et trois travaux pratiques de BTS. Chaque fiche donne le contexte, la réalisation, les difficultés, les compétences du référentiel mobilisées et le document de preuve.</p>
+
+    <div class="filters" role="group" aria-label="Filtrer les projets">
+      <button class="chip on" data-f="all" type="button">Tous</button>
+      <button class="chip" data-f="stage" type="button">Stage</button>
+      <button class="chip" data-f="tp" type="button">TP BTS</button>
+    </div>
+
+    <div class="projects">
+
+      <details class="project" data-k="stage" open>
+        <summary>
+          <span class="badge">Stage · Mairie de Chauray</span>
+          <h3>Serveur de gestion de parc GLPI</h3>
+          <p>Installation complète et sécurisée d’une pile web pour suivre l’inventaire et les tickets d’incidents.</p>
+          <ul class="tags small"><li>Debian 13</li><li>Apache2</li><li>PHP 8.2</li><li>MariaDB</li><li>GLPI 10.0.17</li></ul>
+        </summary>
+        <div class="body">
+          <h4>Objectif</h4>
+          <p>Mettre en place de A à Z un serveur GLPI propre, reproductible et sécurisé, pour gérer le parc informatique et le suivi des incidents.</p>
+          <h4>Ce que j’ai fait</h4>
+          <ul>
+            <li>Installation d’Apache2 (module rewrite) et de MariaDB, sécurisée avec <code>mariadb-secure-installation</code>.</li>
+            <li>Base <code>glpi</code> avec un utilisateur SQL dédié et des privilèges limités.</li>
+            <li>PHP 8.2 installé via le dépôt Sury, car la version par défaut de Debian 13 n’était pas adaptée à GLPI, puis réglage de <code>php.ini</code> et liaison Apache ↔ PHP-FPM.</li>
+            <li>Droits différenciés : lecture seule presque partout, écriture limitée à <code>/files</code>, <code>/config</code> et <code>/marketplace</code>.</li>
+            <li>VirtualHost pointé sur <code>/var/www/glpi/public</code>, comme l’exige GLPI 10.</li>
+            <li>Durcissement final : suppression du fichier d’installation, changement des mots de passe par défaut.</li>
+          </ul>
+          <h4>Pannes rencontrées</h4>
+          <table>
+            <thead><tr><th>Symptôme</th><th>Cause</th><th>Solution</th></tr></thead>
+            <tbody>
+              <tr><td>Page blanche</td><td>Erreur PHP invisible</td><td>Lecture des journaux, ajout des extensions manquantes</td></tr>
+              <tr><td>Code PHP affiché en clair</td><td>Apache ne relayait pas vers PHP-FPM</td><td>Réactivation de <code>proxy_fcgi</code> et <code>setenvif</code></td></tr>
+              <tr><td>« Forbidden »</td><td>Droits ou bloc Directory</td><td>Propriété <code>www-data</code>, permissions 755/644</td></tr>
+              <tr><td>« Not Found »</td><td>DocumentRoot mal placé</td><td>Pointé sur <code>/public</code></td></tr>
+            </tbody>
+          </table>
+          <p class="result"><strong>Résultat :</strong> serveur opérationnel et documenté, utilisable pour l’inventaire et les tickets.</p>
+                  <h4>Environnement technique</h4>
+          <p>Debian 13, Apache2, PHP 8.2 (PHP-FPM, dépôt Sury), MariaDB, GLPI 10.0.17.</p>
+          <h4>Compétences du référentiel mobilisées</h4>
+          <ul class="tags small skills"><li class="b1">B1 · Gérer le patrimoine informatique</li><li class="b1">B1 · Mettre à disposition un service</li><li class="b1">B1 · Répondre aux incidents et demandes</li><li class="b2">B2 · Installer, tester et déployer</li><li class="b2">B2 · Exploiter, dépanner et superviser</li><li class="b3">B3 · Sécuriser les équipements et les usages</li><li class="b3">B3 · Assurer la cybersécurité d’un service</li></ul>
+          <p class="doc"><a class="btn" href="docs/dossier-stage-glpi-fog.pdf" target="_blank" rel="noopener">📄 Dossier technique de stage (PDF)</a></p>
+        </div>
+      </details>
+
+      <details class="project" data-k="stage">
+        <summary>
+          <span class="badge">Stage · Mairie de Chauray</span>
+          <h3>Déploiement de masse Windows 11 avec FOG</h3>
+          <p>Une chaîne PXE/DHCP/TFTP et un script Chocolatey pour installer des postes identiques sans intervention.</p>
+          <ul class="tags small"><li>FOG</li><li>PXE</li><li>DHCP</li><li>TFTP</li><li>Chocolatey</li><li>Windows 11</li></ul>
+        </summary>
+        <div class="body">
+          <h4>Objectif</h4>
+          <p>Déployer Windows 11 et un socle logiciel complet sur plusieurs postes à la fois, sans réinstaller chaque machine à la main.</p>
+          <h4>Architecture</h4>
+          <ul>
+            <li>Serveur FOG : interface web, stockage des images, tâches de capture et de déploiement.</li>
+            <li>DHCP sur le serveur FOG avec options PXE 66/67 pour que les postes trouvent le démarrage réseau.</li>
+            <li>Poste modèle Windows 11 capturé en image disque multi-partitions (<code>Win11full</code>).</li>
+          </ul>
+          <h4>Automatisation</h4>
+          <p>Une tâche planifiée lance au premier démarrage un script qui installe via Chocolatey les logiciels courants (navigateurs, VLC, LibreOffice, Adobe Reader, TeamViewer, Citrix Workspace, Office 365…) et via des installateurs locaux les outils spécifiques. La tâche se supprime ensuite pour éviter toute réinstallation.</p>
+          <h4>Pannes rencontrées</h4>
+          <table>
+            <thead><tr><th>Symptôme</th><th>Cause</th><th>Solution</th></tr></thead>
+            <tbody>
+              <tr><td>Capture réussie, finalisation en échec</td><td>Compte FTP de FOG mal configuré</td><td>Correction du compte <code>fogproject</code></td></tr>
+              <tr><td>Image <code>Win11</code> inutilisable</td><td>Fichier vide, capture mal finalisée</td><td>Récupération depuis le dossier temporaire, bascule sur <code>Win11full</code></td></tr>
+              <tr><td>Blocages de droits</td><td>Permissions sur <code>/images</code></td><td>Ouverture temporaire, propriété rétablie</td></tr>
+            </tbody>
+          </table>
+          <p class="result"><strong>Résultat :</strong> parc déployé de façon homogène, avec une procédure réutilisable.</p>
+                  <h4>Environnement technique</h4>
+          <p>Serveur FOG, DHCP avec options PXE 66/67, TFTP, FTP/NFS, poste modèle Windows 11, Chocolatey.</p>
+          <h4>Compétences du référentiel mobilisées</h4>
+          <ul class="tags small skills"><li class="b1">B1 · Gérer le patrimoine informatique</li><li class="b1">B1 · Mettre à disposition un service</li><li class="b2">B2 · Concevoir une solution d’infrastructure</li><li class="b2">B2 · Installer, tester et déployer</li><li class="b2">B2 · Exploiter, dépanner et superviser</li></ul>
+          <p class="doc"><a class="btn" href="docs/dossier-stage-glpi-fog.pdf" target="_blank" rel="noopener">📄 Dossier technique de stage (PDF)</a></p>
+        </div>
+      </details>
+
+      <details class="project" data-k="tp">
+        <summary>
+          <span class="badge alt">TP · Windows Server</span>
+          <h3>Serveur DHCP sur Windows Server 2022</h3>
+          <p>Un réseau virtuel isolé sous VMware où un serveur attribue seul les adresses à un client Windows 10.</p>
+          <ul class="tags small"><li>Windows Server 2022</li><li>Windows 10</li><li>VMware</li><li>DHCP</li></ul>
+        </summary>
+        <div class="body">
+          <h4>Objectif</h4>
+          <p>Faire distribuer automatiquement une adresse IP par un serveur Windows Server 2022 à un poste Windows 10, sans interférence.</p>
+          <h4>Démarche</h4>
+          <ul>
+            <li>Analyse des réseaux VMware : VMnet1 et VMnet8 ont déjà un DHCP intégré qui entrerait en concurrence, et le mode Bridged risquerait de distribuer des adresses sur le vrai réseau.</li>
+            <li>Choix d’un <strong>LAN Segment</strong> : réseau totalement isolé où le serveur est le seul DHCP.</li>
+            <li>IP statique pour le serveur, hors de la plage distribuée, puis installation du rôle DHCP.</li>
+            <li>Création de l’étendue <code>LANM2L</code> : 172.16.2.10 à 172.16.2.16, masque 255.255.255.0.</li>
+          </ul>
+          <p class="result"><strong>Résultat :</strong> le client a reçu 172.16.2.10, la première adresse de la plage. La documentation inclut un tableau de dépannage (adresse VMware reçue, pare-feu ICMP, étendue désactivée, plage pleine) et un glossaire.</p>
+                  <h4>Environnement technique</h4>
+          <p>VMware Workstation, Windows Server 2022, Windows 10 (build 19045), LAN Segment isolé, étendue 172.16.2.10 à 172.16.2.16.</p>
+          <h4>Compétences du référentiel mobilisées</h4>
+          <ul class="tags small skills"><li class="b1">B1 · Mettre à disposition un service</li><li class="b2">B2 · Installer, tester et déployer</li><li class="b2">B2 · Exploiter, dépanner et superviser</li></ul>
+          <p class="doc"><a class="btn" href="docs/tp-dhcp-windows-server.pdf" target="_blank" rel="noopener">📄 Documentation du TP DHCP (PDF)</a></p>
+        </div>
+      </details>
+
+      <details class="project" data-k="tp">
+        <summary>
+          <span class="badge alt">TP · Cisco Packet Tracer</span>
+          <h3>Du réseau à plat au routage inter-VLAN</h3>
+          <p>Quatre étapes : DHCP, relais DHCP, VLAN, puis router-on-a-stick avec un pool par VLAN.</p>
+          <ul class="tags small"><li>Cisco 2811</li><li>Switch 2950</li><li>VLAN 802.1Q</li><li>DHCP relay</li></ul>
+        </summary>
+        <div class="body">
+          <h4>Progression</h4>
+          <table>
+            <thead><tr><th>Étape</th><th>Configuration</th><th>Résultat</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Serveur DHCP et 4 PC sur un même switch</td><td>Tous adressés, sans routeur</td></tr>
+              <tr><td>2</td><td>Routeur avec relais DHCP (<code>ip helper-address</code>)</td><td>Tous adressés, un seul réseau</td></tr>
+              <tr><td>3</td><td>VLAN 2 INFO et VLAN 3 VENTE sur le switch</td><td>VLAN isolés, pas d’adresse</td></tr>
+              <tr><td>4</td><td>Trunk 802.1Q, sous-interfaces dot1Q, un pool par VLAN</td><td>VLAN séparés et routés entre eux</td></tr>
+            </tbody>
+          </table>
+          <h4>Plan d’adressage final</h4>
+          <p>VLAN 2 INFO en 172.16.0.0/24 (passerelle .254) et VLAN 3 VENTE en 172.17.0.0/24 (passerelle .254), réseau serveur en 172.18.0.0/24.</p>
+          <h4>Esprit critique</h4>
+          <p>J’ai relu mon propre fichier et relevé trois anomalies : une adresse résiduelle sur l’interface physique, deux pools couvrant la même plage, et un nom de pool avec une espace finale. J’ai aussi vérifié que la documentation ne dise rien de plus que ce que je sais expliquer.</p>
+                  <h4>Environnement technique</h4>
+          <p>Cisco Packet Tracer : routeur 2811, switch 2950-24, Server-PT, 4 PC. VLAN 2 INFO, VLAN 3 VENTE, trunk 802.1Q, sous-interfaces dot1Q.</p>
+          <h4>Compétences du référentiel mobilisées</h4>
+          <ul class="tags small skills"><li class="b2">B2 · Concevoir une solution d’infrastructure</li><li class="b2">B2 · Installer, tester et déployer</li><li class="b3">B3 · Segmenter pour sécuriser un réseau</li></ul>
+          <p class="doc"><a class="btn" href="docs/tp-vlan-routage-inter-vlan.pdf" target="_blank" rel="noopener">📄 Documentation du TP VLAN (PDF)</a></p>
+        </div>
+      </details>
+
+      <details class="project" data-k="tp">
+        <summary>
+          <span class="badge alt">TP · Cisco Packet Tracer</span>
+          <h3>Spanning Tree Protocol (802.1D)</h3>
+          <p>Six switchs redondants : élection du pont racine, coûts, ports bloqués et temps de reconvergence.</p>
+          <ul class="tags small"><li>STP</li><li>Bridge ID</li><li>Reconvergence</li><li>Cisco IOS</li></ul>
+        </summary>
+        <div class="body">
+          <h4>Objectif</h4>
+          <p>Comprendre comment STP supprime les boucles d’un réseau redondant et comment il se rétablit après une panne.</p>
+          <h4>Quatre scénarios testés</h4>
+          <ul>
+            <li><strong>Coupure d’un lien :</strong> un port bloqué prend le relais, avec 10 pings perdus pendant la reconvergence (30 à 50 s).</li>
+            <li><strong>Liens Gigabit :</strong> STP préfère un chemin à deux sauts (coût 4 + 4 = 8) au lien direct FastEthernet (19).</li>
+            <li><strong>Changement de priorité :</strong> <code>spanning-tree vlan 1 priority 8192</code> fait de SW2 le nouveau pont racine.</li>
+            <li><strong>Panne du pont racine :</strong> avec un <code>ping -t</code> continu, 5 paquets perdus sur 157, puis SW1 est élu racine à la plus petite adresse MAC.</li>
+          </ul>
+          <h4>Mise en application</h4>
+          <p>Avec des priorités imposées (4096 pour SW5 et SW3, 8192 pour SW1 et SW2, 20480 pour SW4), j’ai déterminé à la main le pont racine, les ports racine et les liens bloqués, en départageant les égalités par le Bridge ID. J’ai aussi expliqué pourquoi Cisco affiche 32769 au lieu de 32768 (extension d’identifiant de VLAN).</p>
+                  <h4>Environnement technique</h4>
+          <p>Cisco Packet Tracer : 6 switchs (SW1 à SW6), liens FastEthernet et Gigabit, commandes <code>show spanning-tree</code> et <code>spanning-tree vlan 1 priority</code>.</p>
+          <h4>Compétences du référentiel mobilisées</h4>
+          <ul class="tags small skills"><li class="b2">B2 · Concevoir une solution d’infrastructure</li><li class="b2">B2 · Exploiter, dépanner et superviser</li><li class="b3">B3 · Garantir la disponibilité des services</li></ul>
+          <p class="doc"><a class="btn" href="docs/tp-spanning-tree.pdf" target="_blank" rel="noopener">📄 Compte rendu du TP Spanning Tree (PDF)</a></p>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <section id="synthese">
+    <h2><span class="num">04</span> Tableau de synthèse</h2>
+    <p class="sub">Les compétences des trois blocs du référentiel BTS SIO, et les projets qui les illustrent. Les cases vides sont mes axes de progression.</p>
+    <div class="legend"><span><i class="dot full"></i> Compétence principale du projet</span><span><i class="dot half"></i> Compétence abordée</span><span><i class="dot none"></i> Non couvert pour l’instant</span></div>
+    <div class="scroll">
+    <table class="matrix">
+      <thead><tr><th scope="col">Compétence</th><th scope="col">GLPI</th><th scope="col">FOG</th><th scope="col">DHCP</th><th scope="col">VLAN</th><th scope="col">STP</th></tr></thead>
+      <tbody>
+        <tr class="grp"><th colspan="6">Bloc 1 · Support et mise à disposition de services informatiques</th></tr>
+        <tr><th scope="row">Gérer le patrimoine informatique</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row">Répondre aux incidents et aux demandes d’assistance et d’évolution</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row">Mettre à disposition des utilisateurs un service informatique</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td></td><td></td></tr>
+        <tr><th scope="row">Travailler en mode projet</th><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row">Organiser son développement professionnel (veille, documentation)</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td></tr>
+        <tr><th scope="row">Développer la présence en ligne de l’organisation</th><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr class="grp"><th colspan="6">Bloc 2 · Administration des systèmes et des réseaux</th></tr>
+        <tr><th scope="row">Concevoir une solution d’infrastructure réseau</th><td></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td></tr>
+        <tr><th scope="row">Installer, tester et déployer une solution d’infrastructure réseau</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td></td></tr>
+        <tr><th scope="row">Exploiter, dépanner et superviser une solution d’infrastructure réseau</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td></tr>
+        <tr class="grp"><th colspan="6">Bloc 3 · Cybersécurité des services informatiques</th></tr>
+        <tr><th scope="row">Protéger les données à caractère personnel</th><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row">Préserver l’identité numérique de l’organisation</th><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row">Sécuriser les équipements et les usages des utilisateurs</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td></td><td></td><td></td><td></td></tr>
+        <tr><th scope="row">Garantir la disponibilité, l’intégrité et la confidentialité des services et données</th><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td></tr>
+        <tr><th scope="row">Assurer la cybersécurité d’une infrastructure réseau, d’un système ou d’un service</th><td><i class="dot full" role="img" aria-label="Compétence principale"></i></td><td></td><td></td><td><i class="dot half" role="img" aria-label="Compétence abordée"></i></td><td></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">Les intitulés suivent les trois blocs du référentiel : bloc 1 commun aux deux options, bloc 2 spécifique à SISR, bloc 3 cybersécurité commun aux deux options.</p>
+  </section>
+
+  <section id="veille">
+    <h2><span class="num">05</span> Veille technologique</h2>
+    <p class="sub">Ma veille suit ce que j’installe et exploite en projet : maintenir des services à jour et fiables.</p>
+    <div class="grid3">
+      <article class="card">
+        <h3>Thème</h3>
+        <p>Disponibilité et maintien en conditions opérationnelles des infrastructures : compatibilité des versions, redondance réseau, sécurisation après installation.</p>
+      </article>
+      <article class="card">
+        <h3>Sources</h3>
+        <ul class="plain">
+          <li>IT-Connect (tutoriels et actualités systèmes et réseaux)</li>
+          <li>Documentation Cisco (protocole Spanning Tree, document 10543)</li>
+          <li>Journaux Apache, PHP et GLPI lors des diagnostics</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Méthode</h3>
+        <p>Je pars d’un problème réel d’un projet, je cherche dans les sources, puis je vérifie par un test sur la maquette avant de l’écrire dans ma documentation.</p>
+      </article>
+    </div>
+    <h3 class="subh">Exemples issus de mes projets</h3>
+    <div class="grid2">
+      <article class="card">
+        <h4>Choisir la bonne version de PHP</h4>
+        <p>GLPI n’est pas garanti compatible avec toutes les versions de PHP. La version par défaut de Debian 13 ne convenait pas : j’ai installé PHP 8.2 depuis le dépôt Sury, après avoir vérifié la compatibilité.</p>
+      </article>
+      <article class="card">
+        <h4>Du STP au RSTP</h4>
+        <p>Pendant le TP, la reconvergence de STP a coûté 10 pings perdus (30 à 50 s). En entreprise on utilise plutôt RSTP (802.1w), qui reconverge en quelques secondes, activé avec <code>spanning-tree mode rapid-pvst</code> sur Cisco.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="parcours">
+    <h2><span class="num">06</span> Parcours</h2>
+    <ol class="timeline">
+      <li>
+        <time>Sept. 2025 – aujourd’hui</time>
+        <h3>BTS SIO option SISR</h3>
+        <p>Lycée Charles de Foucauld. Installer, configurer et sécuriser des infrastructures, les superviser et les dépanner, répondre aux incidents des utilisateurs.</p>
+      </li>
+      <li>
+        <time>4 mai – 9 juin 2026</time>
+        <h3>Stage, technicien systèmes et réseaux</h3>
+        <p>Mairie de Chauray. Serveur GLPI et déploiement FOG, menés de l’installation à la mise en production.</p>
+      </li>
+      <li>
+        <time>Mai 2025 – aujourd’hui</time>
+        <h3>Chef de rang</h3>
+        <p>Café Lorette. Encaissement, service, relation client. Précédemment aux Mérovingiens (janvier 2025 – juin 2026).</p>
+      </li>
+      <li>
+        <time>Janv. – avril 2025</time>
+        <h3>Employé en sécurité</h3>
+        <p>Halle Georges Carpentier. Surveillance, rondes et application des consignes.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section id="contact">
+    <h2><span class="num">07</span> Contact</h2>
+    <p class="sub">Je cherche un stage ou une alternance de technicien systèmes et réseaux.</p>
+    <div class="contact">
+      <a class="btn primary" id="mail" href="mailto:lfouillade.pro@gmail.com">lfouillade.pro@gmail.com</a>
+      <button class="btn" id="copy" type="button">Copier l’adresse</button>
+      <a class="btn" href="https://github.com/1iam-boop" target="_blank" rel="noopener">GitHub</a>
+          </div>
+  </section>
+</main>
+
+<footer>
+  <p>© <span id="year">2026</span> Liam Fouillade · Site statique hébergé sur GitHub Pages</p>
+</footer>
+<button id="up" type="button" aria-label="Retour en haut">↑</button>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="script.js"></script>
+</body>
+</html>
