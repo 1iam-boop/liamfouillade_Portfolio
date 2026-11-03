@@ -606,6 +606,37 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
 #tbscr .ttap{position:absolute;width:2.6em;height:2.6em;margin:-1.3em 0 0 -1.3em;border-radius:50%;background:#ffffff88;opacity:0;pointer-events:none;z-index:8}
 #tbscr .ttap.go{animation:tap .45s ease-out}
 
+/* ===== Coffre : inventaire ===== */
+#chestui{position:fixed;inset:0;z-index:12;pointer-events:none}
+#chestui[hidden]{display:none}
+#chestui>*{pointer-events:auto}
+#chestui>.close{position:absolute;top:14px;left:14px;opacity:0;transition:opacity .3s}
+#chestui.show>.close{opacity:1}
+#chestui .inv{position:absolute;right:max(3vw,16px);top:50%;width:min(390px,40vw);transform:translate(30px,-50%);opacity:0;transition:transform .5s var(--ease),opacity .4s;background:linear-gradient(160deg,#1a1408f0,#0b1118f0);border:2px solid #d9b24a;border-radius:16px;padding:18px 20px;box-shadow:0 0 0 4px #00000060,0 30px 70px -20px #000,inset 0 0 30px #d9b24a22}
+#chestui.show .inv{transform:translate(0,-50%);opacity:1}
+#chestui .kick{margin:0;font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:#d9b24a}
+#chestui h3{margin:4px 0 12px;font:700 22px var(--mono);color:#fff3d6;text-shadow:0 0 12px #d9b24a66}
+.slots{list-style:none;margin:0 0 14px;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.slot{width:100%;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border-radius:10px;background:#0006;border:2px solid color-mix(in srgb,var(--rc) 55%,transparent);color:#e8edf5;font:600 11px var(--sans);cursor:pointer;box-shadow:inset 0 0 14px color-mix(in srgb,var(--rc) 25%,transparent);transition:transform .15s,box-shadow .2s,border-color .2s}
+.slot i{font-style:normal;font-size:24px;line-height:1}
+.slot span{text-align:center;line-height:1.2}
+.slot:hover{transform:translateY(-2px)}
+.slot.on{border-color:var(--rc);box-shadow:inset 0 0 22px color-mix(in srgb,var(--rc) 55%,transparent),0 0 16px color-mix(in srgb,var(--rc) 45%,transparent)}
+.detail{border-top:1px solid #d9b24a44;padding-top:12px}
+.detail.in{animation:up .35s var(--ease) both}
+.detail .dh{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.detail b{font:700 17px var(--mono);color:#fff}
+.detail .dh span{font:700 11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--rc)}
+.detail p{margin:8px 0 0;color:#c9d2e3;line-height:1.55;font-size:14px}
+.detail .use em{font-style:normal;color:#d9b24a;font-weight:600}
+@media (max-width:820px){
+ #chestui .inv{left:10px;right:10px;top:auto;bottom:12px;width:auto;transform:translateY(30px);padding:14px 14px}
+ #chestui.show .inv{transform:none}
+ #chestui h3{font-size:18px;margin-bottom:8px}
+ .slot{padding:7px 2px 6px}.slot i{font-size:20px}.slot span{font-size:10px}
+ .detail p{font-size:13px}
+}
+
 </style>
 </head>
 <body>
@@ -1062,6 +1093,15 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     <div class="ttap" id="tbtap"></div>
   </div>
 </div>
+<div id="chestui" hidden role="dialog" aria-modal="true" aria-label="Coffre : mon arsenal">
+  <button class="close" id="chclose" type="button">← Refermer le coffre</button>
+  <div class="inv">
+    <p class="kick">Coffre ouvert · 6 objets</p>
+    <h3>Mon arsenal</h3>
+    <ul class="slots" id="chslots"></ul>
+    <div class="detail" id="chdetail"><div class="dh"><b id="chname"></b><span id="chrar"></span></div><p id="chdesc"></p><p class="use"><em>Utilisé pour :</em> <span id="chuse"></span></p></div>
+  </div>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1081,7 +1121,8 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     { key: "veille", label: "Veille", obj: "Bibliothèque" },
     { key: "parcours", label: "Parcours", obj: "Cadres" },
     { key: "passions", label: "Passions", obj: "Moto et sport" },
-    { key: "contact", label: "Contact", obj: "Téléphone" }
+    { key: "contact", label: "Contact", obj: "Téléphone" },
+    { key: "coffre", label: "Coffre", obj: "Coffre au trésor" }
   ];
   var PART_OBJ = { passions: "moto" };
   var MODE = { projets: "pc", synthese: "board", competences: "tablet", apropos: "mirror" };
@@ -1120,13 +1161,14 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     var okey = (OBJ && OBJ[key]) ? key : (PART_OBJ[key] || key);
     var part = (OBJ && OBJ[okey] && OBJ[okey].part) || key;
     var scrollSel = (OBJ && OBJ[okey] && OBJ[okey].scroll) || null;
-    if (current && (part === "veille" || part === "contact" || part === "parcours" || part === "competences")) hidePanelNow();
+    if (current && (part === "veille" || part === "contact" || part === "parcours" || part === "competences" || part === "coffre")) hidePanelNow();
     var fi = from ? 0 : (pickedFrame >= 0 ? pickedFrame : 0);
     if (sceneOK) { setHover(null); focusKey = okey; chairGoal = okey === "projets" ? 1 : 0; focusOn(okey); }
     if (part === "veille") { openBook(); return; }
     if (part === "contact") { openPhone(); return; }
     if (part === "parcours") { openGallery(fi); return; }
     if (part === "competences") { openTablet(); return; }
+    if (part === "coffre") { openChest(); return; }
     if (part === "synthese" && sceneOK && !reduce && !current) {
       document.body.classList.add("open"); eraseRun(1, 1350, "wipe");
       clearTimeout(pendingT); pendingT = setTimeout(function () { pendingT = null; showPanel(part, scrollSel); }, 1400); return;
@@ -1139,6 +1181,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     if (phoneOpen) { closePhone(); return; }
     if (tabOpen) { closeTablet(); return; }
     if (galOpen) { closeGallery(); return; }
+    if (chestOpen) { closeChest(); return; }
     if (reading) { closeBook(); return; }
     if (!current && pendingT) { clearTimeout(pendingT); pendingT = null; document.body.classList.remove("open"); if (sceneOK && focusKey) leaveFocus(focusKey); return; }
     if (!current) return;
@@ -1422,6 +1465,47 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   $$(".ai").forEach(function (b) { b.addEventListener("click", function () { tbTap(b); setTimeout(function () { tbApp(b.dataset.app); }, 180); }); });
   $$("#tbscr .back").forEach(function (b) { b.addEventListener("click", function () { tbApp(""); }); });
   $("#tbscr .tlock").addEventListener("click", function () { if (!tbUI.classList.contains("unlock")) tbUnlockNow(); });
+
+  /* ---------- Coffre : inventaire des armes ---------- */
+  var chestOpen = false, chTimers = [], chUI = $("#chestui");
+  var ARMS = [
+    { n: "Épée Debian", r: "Légendaire", c: "#ff9f1a", i: "🗡️", d: "Administration Linux : Debian 13, Apache2, PHP-FPM, MariaDB.", u: "Serveur GLPI (stage)" },
+    { n: "Bouclier Cyber", r: "Épique", c: "#b06bff", i: "🛡️", d: "Sécuriser les accès : mots de passe par défaut changés, droits limités. Bloc 3 du BTS.", u: "Serveur GLPI (stage)" },
+    { n: "Arc Réseau", r: "Épique", c: "#b06bff", i: "🏹", d: "VLAN 802.1Q, routage inter-VLAN, Spanning Tree, Cisco IOS, Packet Tracer.", u: "TP VLAN · TP Spanning Tree" },
+    { n: "Hache Windows Server", r: "Rare", c: "#3d8bff", i: "🪓", d: "Windows Server 2022 et DHCP ; déploiement de Windows 11 en masse avec FOG (PXE).", u: "TP DHCP · FOG (stage)" },
+    { n: "Marteau de dépannage", r: "Rare", c: "#3d8bff", i: "🔨", d: "Diagnostiquer à partir des journaux Apache, PHP et GLPI plutôt qu'au hasard.", u: "GLPI · FOG (stage)" },
+    { n: "Bâton des scripts", r: "Peu commun", c: "#35d07f", i: "🪄", d: "Python, SQL, HTML / CSS, et Chocolatey pour installer des logiciels en ligne de commande.", u: "Outils et code" }
+  ];
+  (function () {
+    var ul = $("#chslots");
+    ARMS.forEach(function (a, i) { var li = document.createElement("li"); var b = document.createElement("button"); b.type = "button"; b.className = "slot"; b.style.setProperty("--rc", a.c); b.innerHTML = '<i>' + a.i + '</i><span></span>'; b.lastChild.textContent = a.n; b.addEventListener("click", function () { chPick(i); }); li.appendChild(b); ul.appendChild(li); });
+  })();
+  function chPick(i) {
+    chSel = i; var a = ARMS[i], d = $("#chdetail");
+    $$("#chslots .slot").forEach(function (b, j) { b.classList.toggle("on", j === i); });
+    d.style.setProperty("--rc", a.c); d.classList.remove("in"); void d.offsetWidth; d.classList.add("in");
+    $("#chname").textContent = a.n; $("#chrar").textContent = a.r; $("#chdesc").textContent = a.d; $("#chuse").textContent = a.u;
+  }
+  function openChest() {
+    chestOpen = true; document.body.classList.add("open", "reading"); chTimers.forEach(clearTimeout); chTimers = [];
+    if (!sceneOK) { chPick(0); chUI.hidden = false; void chUI.offsetWidth; chUI.classList.add("show"); return; }
+    chTimers.push(setTimeout(function () {
+      chestRun(1, 1000);
+      weapons.forEach(function (w, i) { weaponRun(i, 1, 750, 650 + i * 170); });
+      chTimers.push(setTimeout(function () { if (!chestOpen) return; chPick(0); chUI.hidden = false; void chUI.offsetWidth; chUI.classList.add("show"); setTimeout(function () { $("#chclose").focus({ preventScroll: true }); }, 100); }, reduce ? 0 : 1900));
+    }, reduce ? 0 : 900));
+  }
+  function closeChest() {
+    chestOpen = false; chTimers.forEach(clearTimeout); chTimers = [];
+    chUI.classList.remove("show"); setTimeout(function () { if (!chestOpen) chUI.hidden = true; }, reduce ? 0 : 350);
+    document.body.classList.remove("open", "reading");
+    if (!sceneOK) return;
+    weapons.forEach(function (w, i) { weaponRun(i, 0, 450, (5 - i) * 60); });
+    chTimers.push(setTimeout(function () { chestRun(0, 700); }, reduce ? 0 : 650));
+    if (focusKey) leaveFocus(focusKey);
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+  $("#chclose").addEventListener("click", closePanel);
 
   /* Miroir : plusieurs skins, chacun renvoie vers une partie */
   var SKINS = [
@@ -2260,10 +2344,10 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   var sport = new THREE.Group();
   var bagTex = tex(256, 256, function (x, w, h) { var g = x.createLinearGradient(0, 0, w, 0); g.addColorStop(0, "#7a1018"); g.addColorStop(0.5, "#c4161c"); g.addColorStop(1, "#7a1018"); x.fillStyle = g; x.fillRect(0, 0, w, h); x.strokeStyle = "rgba(0,0,0,0.35)"; x.lineWidth = 3; for (var i = 1; i < 6; i++) { x.beginPath(); x.moveTo(0, i * 42); x.lineTo(w, i * 42); x.stroke(); } x.fillStyle = "#fff"; x.font = "bold 40px sans-serif"; x.textAlign = "center"; x.fillText("BOX", w / 2, 150); });
   var bagG = new THREE.Group();
-  var bagM = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.17, 0.95, 28), new THREE.MeshStandardMaterial({ map: bagTex.t, roughness: 0.55 })); bagM.position.y = -0.62; bagM.castShadow = true; bagG.add(bagM);
-  var bagTop = cyl(0.175, 0.17, 0.05, 0x111214, { r: 0.6 }); bagTop.position.y = -0.12; bagG.add(bagTop);
-  [0, 1, 2, 3].forEach(function (i) { var ch = cyl(0.004, 0.004, 0.55, 0xb9bcc4, { m: 0.9 }); ch.position.set(Math.cos(i * 1.57) * 0.1, 0.17, Math.sin(i * 1.57) * 0.1); ch.rotation.z = Math.cos(i * 1.57) * 0.2; ch.rotation.x = Math.sin(i * 1.57) * 0.2; bagG.add(ch); });
-  bagG.position.set(2.1, 2.9 - 0.12, 2.0); sport.add(bagG);
+  var bagM = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.6, 28), new THREE.MeshStandardMaterial({ map: bagTex.t, roughness: 0.55 })); bagM.position.y = -0.545; bagM.castShadow = true; bagG.add(bagM);
+  var bagTop = cyl(0.125, 0.12, 0.04, 0x111214, { r: 0.6 }); bagTop.position.y = -0.225; bagG.add(bagTop);
+  [0, 1, 2, 3].forEach(function (i) { var ch = cyl(0.004, 0.004, 0.22, 0xb9bcc4, { m: 0.9 }); ch.position.set(Math.cos(i * 1.57) * 0.05, -0.1, Math.sin(i * 1.57) * 0.05); ch.rotation.z = Math.cos(i * 1.57) * 0.45; ch.rotation.x = -Math.sin(i * 1.57) * 0.45; bagG.add(ch); });
+  bagG.position.set(2.1, 2.98, 2.0); sport.add(bagG); bagG.add(put(cyl(0.03, 0.03, 0.02, 0x2a2c31, { m: 0.6 }), 0, 0.005, 0));
   function glove(sx2) { var g = new THREE.Group(); g.add(sph(0.075, 0xc4161c, { r: 0.45 }, 1, 1.15, 1.2)); var th = sph(0.035, 0xc4161c, { r: 0.45 }); th.position.set(sx2 * 0.07, -0.02, 0.05); g.add(th); var cf2 = cyl(0.045, 0.05, 0.07, 0x111214, { r: 0.6 }); cf2.position.y = 0.1; g.add(cf2); var lace = box(0.09, 0.01, 0.01, 0xffffff); lace.position.y = 0.06; g.add(lace); return g; }
   var gl1 = glove(1), gl2 = glove(-1); gl1.position.set(1.72, 1.7, 2.9); gl2.position.set(1.88, 1.7, 2.9);
   var hookbar = box(0.4, 0.03, 0.04, 0x3a2a1c); hookbar.position.set(1.8, 1.84, 2.96); sport.add(hookbar); [1.72, 1.88].forEach(function (x) { var hk = cyl(0.004, 0.004, 0.08, 0xb9bcc4, { m: 0.9 }); hk.position.set(x, 1.8, 2.93); sport.add(hk); });
@@ -2476,6 +2560,92 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
   var bikeMat = new THREE.Group(); var bm2 = plane(0.95, 2.4, new THREE.MeshStandardMaterial({ map: matT.t, roughness: 0.9 })); bm2.rotation.x = -Math.PI / 2; bm2.position.y = 0.003; bm2.receiveShadow = true; bikeMat.add(bm2);
   bikeMat.position.set(-2.15, 0, 1.9); bikeMat.rotation.y = 0.1; scene.add(bikeMat);
 
+  /* --- Coffre au trésor : le couvercle s'ouvre et les armes en sortent --- */
+  var chest = new THREE.Group(), chestIn = new THREE.Group(); chest.add(chestIn);
+  var plankT = tex(256, 128, function (x, w, h) {
+    x.fillStyle = "#6b4426"; x.fillRect(0, 0, w, h);
+    for (var j = 0; j < 4; j++) { x.fillStyle = ["#6b4426", "#5e3b20", "#74492a", "#63401f"][j]; x.fillRect(0, j * 32, w, 30); x.fillStyle = "#2a170a"; x.fillRect(0, j * 32 + 30, w, 2); }
+    for (var i = 0; i < 160; i++) { x.strokeStyle = "rgba(30,15,5," + (0.08 + Math.random() * 0.15) + ")"; x.beginPath(); var y = Math.random() * h; x.moveTo(0, y); x.bezierCurveTo(w * 0.3, y + 3, w * 0.6, y - 3, w, y + 1); x.stroke(); }
+  });
+  function wood(w, h, d) { return box(w, h, d, 0xffffff, { map: plankT.t, r: 0.75, bump: plankT.t, bs: 0.5 }); }
+  var IRON = 0x2a2c31, GOLDC = 0xd9b24a;
+  chestIn.add(put(wood(0.75, 0.03, 0.45), 0, 0.015, 0));
+  chestIn.add(put(wood(0.75, 0.36, 0.03), 0, 0.18, 0.21)); chestIn.add(put(wood(0.75, 0.36, 0.03), 0, 0.18, -0.21));
+  chestIn.add(put(wood(0.03, 0.36, 0.45), 0.36, 0.18, 0)); chestIn.add(put(wood(0.03, 0.36, 0.45), -0.36, 0.18, 0));
+  chestIn.add(put(box(0.69, 0.005, 0.39, 0x3a1c10, { r: 1 }), 0, 0.035, 0));
+  [-0.25, 0.25].forEach(function (x) { chestIn.add(put(box(0.05, 0.37, 0.46, IRON, { m: 0.7, r: 0.4 }), x, 0.18, 0)); });
+  [0.04, 0.33].forEach(function (y) { chestIn.add(put(box(0.76, 0.03, 0.46, IRON, { m: 0.7, r: 0.4 }), 0, y, 0)); });
+  [[-1, -1], [1, -1], [-1, 1], [1, 1]].forEach(function (c) { chestIn.add(put(box(0.06, 0.06, 0.06, GOLDC, { m: 0.6, r: 0.3 }), c[0] * 0.355, 0.03, c[1] * 0.205)); });
+  chestIn.add(put(box(0.09, 0.11, 0.015, GOLDC, { m: 0.6, r: 0.3 }), 0, 0.3, 0.232));
+  var keyh = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.004, 12), new THREE.MeshBasicMaterial({ color: 0x111111 })); keyh.rotation.x = Math.PI / 2; keyh.position.set(0, 0.29, 0.241); chestIn.add(keyh);
+  // trésor : pièces (instances) et gemmes
+  var coinM = new THREE.MeshStandardMaterial({ color: 0xe8c04a, metalness: 0.6, roughness: 0.3, emissive: 0x6a4a00, emissiveIntensity: 0.2 });
+  var coins = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.018, 0.018, 0.004, 12), coinM, 90), cd = new THREE.Object3D();
+  for (var ci = 0; ci < 90; ci++) { var rx = (Math.random() - 0.5) * 0.62, rz = (Math.random() - 0.5) * 0.34, chh = 0.2 - (Math.abs(rx) * 0.25 + Math.abs(rz) * 0.3); cd.position.set(rx, 0.04 + Math.random() * Math.max(0.03, chh), rz); cd.rotation.set((Math.random() - 0.5) * 1.2, Math.random() * 3, (Math.random() - 0.5) * 1.2); cd.updateMatrix(); coins.setMatrixAt(ci, cd.matrix); }
+  chestIn.add(coins);
+  [[0xe5484d, -0.15, 0.05], [0x35e0ff, 0.12, -0.06], [0x16b27a, 0.02, 0.08]].forEach(function (g) { var gm = new THREE.Mesh(new THREE.OctahedronGeometry(0.028), new THREE.MeshStandardMaterial({ color: g[0], emissive: g[0], emissiveIntensity: 0.4, roughness: 0.15, metalness: 0.2 })); gm.position.set(g[1], 0.16, g[2]); chestIn.add(gm); });
+  // couvercle bombé sur charnière
+  var lidG = new THREE.Group(); lidG.position.set(0, 0.36, -0.225); chestIn.add(lidG);
+  var lidC = new THREE.Mesh(new THREE.CylinderGeometry(0.225, 0.225, 0.75, 24, 1, false, 0, Math.PI), new THREE.MeshStandardMaterial({ map: plankT.t, roughness: 0.75 })); lidC.rotation.z = Math.PI / 2; lidC.position.set(0, 0, 0.225); lidC.castShadow = true; lidG.add(lidC);
+  lidC.scale.set(0.6, 1, 1);
+  lidG.add(put(box(0.74, 0.012, 0.44, 0x3a1c10, { r: 1 }), 0, 0.005, 0.225));
+  [-0.25, 0.25].forEach(function (x) { var band = new THREE.Mesh(new THREE.CylinderGeometry(0.229, 0.229, 0.05, 24, 1, true, 0, Math.PI), new THREE.MeshStandardMaterial({ color: IRON, metalness: 0.7, roughness: 0.4, side: THREE.DoubleSide })); band.rotation.z = Math.PI / 2; band.scale.set(0.6, 1, 1); band.position.set(x, 0, 0.225); lidG.add(band); });
+  lidG.add(put(box(0.06, 0.09, 0.015, GOLDC, { m: 0.6, r: 0.3 }), 0, 0.02, 0.455));
+  var chestGlowT = tex(128, 128, function (x, w, h) { var g = x.createRadialGradient(w / 2, h / 2, 2, w / 2, h / 2, w / 2); g.addColorStop(0, "rgba(255,220,120,1)"); g.addColorStop(1, "rgba(255,200,80,0)"); x.fillStyle = g; x.fillRect(0, 0, w, h); });
+  var cGlow = plane(0.9, 0.6, new THREE.MeshBasicMaterial({ map: chestGlowT.t, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })); cGlow.rotation.x = -Math.PI / 2; cGlow.position.set(0, 0.3, 0); cGlow.userData.noHover = true; chestIn.add(cGlow);
+  var rayT = tex(64, 256, function (x, w, h) { var g = x.createLinearGradient(0, h, 0, 0); g.addColorStop(0, "rgba(255,215,120,0.9)"); g.addColorStop(1, "rgba(255,215,120,0)"); x.fillStyle = g; x.fillRect(0, 0, w, h); });
+  var cRays = new THREE.Mesh(new THREE.CylinderGeometry(0.34, 0.3, 0.9, 24, 1, true), new THREE.MeshBasicMaterial({ map: rayT.t, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })); cRays.position.set(0, 0.9, 0); cRays.userData.noHover = true; chestIn.add(cRays);
+  // étincelles
+  var spN = 40, spGeo = new THREE.BufferGeometry(), spPos = new Float32Array(spN * 3), spSeed = []; for (var sk = 0; sk < spN; sk++) spSeed.push([Math.random(), (Math.random() - 0.5) * 0.6, (Math.random() - 0.5) * 0.3]);
+  spGeo.setAttribute("position", new THREE.BufferAttribute(spPos, 3));
+  var sparks = new THREE.Points(spGeo, new THREE.PointsMaterial({ color: 0xffd76a, size: 0.016, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })); chestIn.add(sparks);
+
+  // armes
+  function steel() { return { m: 0.6, r: 0.22 }; }
+  function aura(color) { var a = plane(0.42, 0.56, new THREE.MeshBasicMaterial({ map: glowTexW.t, color: color, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false })); a.position.z = -0.04; a.userData.noHover = true; return a; }
+  var glowTexW = tex(128, 128, function (x, w, h) { var g = x.createRadialGradient(w / 2, h / 2, 2, w / 2, h / 2, w / 2); g.addColorStop(0, "rgba(255,255,255,0.9)"); g.addColorStop(1, "rgba(255,255,255,0)"); x.fillStyle = g; x.fillRect(0, 0, w, h); });
+  function wSword() { var g = new THREE.Group(); var bl = box(0.045, 0.3, 0.01, 0xdfe3ea, steel()); bl.position.y = 0.06; g.add(bl); var tip = new THREE.Mesh(new THREE.ConeGeometry(0.032, 0.07, 4), mat(0xdfe3ea, steel())); tip.rotation.y = Math.PI / 4; tip.scale.z = 0.3; tip.position.y = 0.245; g.add(tip); g.add(put(box(0.006, 0.26, 0.012, 0xa8b0bd, steel()), 0, 0.05, 0)); g.add(put(box(0.15, 0.022, 0.03, 0xd9b24a, { m: 0.6, r: 0.3 }), 0, -0.1, 0)); g.add(put(cyl(0.014, 0.014, 0.09, 0x4a2a14, { r: 0.8 }), 0, -0.16, 0)); g.add(put(sph(0.022, 0xd9b24a, { m: 0.6, r: 0.3 }), 0, -0.215, 0)); return g; }
+  function wShield() { var g = new THREE.Group(); var face = tex(256, 256, function (x, w, h) { x.fillStyle = "#1f4fbf"; x.fillRect(0, 0, w, h); x.fillStyle = "#e8edf5"; x.fillRect(96, 120, 64, 52); x.strokeStyle = "#e8edf5"; x.lineWidth = 12; x.beginPath(); x.arc(128, 118, 22, Math.PI, 0); x.stroke(); x.fillStyle = "#1f4fbf"; x.beginPath(); x.arc(128, 142, 7, 0, 7); x.fill(); });
+    var sm = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.025, 36), [mat(0x8a6a3e), new THREE.MeshStandardMaterial({ map: face.t, roughness: 0.5 }), mat(0x5a3e24)]); sm.rotation.x = Math.PI / 2; sm.castShadow = true; g.add(sm);
+    var rim = tor(0.16, 0.012, 0xd9b24a, { m: 0.6, r: 0.3 }); g.add(rim); return g; }
+  function wHammer() { var g = new THREE.Group(); g.add(put(cyl(0.013, 0.013, 0.42, 0x6b4426, { r: 0.8 }), 0, -0.02, 0)); g.add(put(rbox(0.17, 0.075, 0.075, 0.01, 0x5a5f6b, steel()), 0, 0.2, 0)); [-0.05, 0.05].forEach(function (x) { g.add(put(box(0.012, 0.08, 0.08, 0xd9b24a, { m: 0.6, r: 0.3 }), x, 0.2, 0)); }); g.add(put(cyl(0.017, 0.017, 0.06, 0x2a170a, { r: 0.9 }), 0, -0.19, 0)); return g; }
+  function wAxe() { var g = new THREE.Group(); g.add(put(cyl(0.013, 0.013, 0.44, 0x6b4426, { r: 0.8 }), 0, -0.02, 0)); var s = new THREE.Shape(); s.moveTo(0, -0.03); s.quadraticCurveTo(0.08, -0.08, 0.13, -0.1); s.quadraticCurveTo(0.16, 0.02, 0.13, 0.12); s.quadraticCurveTo(0.08, 0.08, 0, 0.04); s.lineTo(0, -0.03);
+    var bl = new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth: 0.012, bevelEnabled: true, bevelThickness: 0.003, bevelSize: 0.004, bevelSegments: 1 }), mat(0xdfe3ea, steel())); bl.position.set(0.005, 0.15, -0.006); bl.castShadow = true; g.add(bl); g.add(put(box(0.03, 0.08, 0.03, 0x2a2c31, { m: 0.6 }), 0, 0.15, 0)); return g; }
+  function wBow() { var g = new THREE.Group(); var arc = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.011, 8, 32, Math.PI * 0.7), mat(0x7a4a26, { r: 0.6 })); arc.rotation.z = Math.PI - Math.PI * 0.35; arc.position.x = 0.16; arc.castShadow = true; g.add(arc);
+    var e1 = new THREE.Vector3(0.16 + 0.24 * Math.cos(Math.PI * 0.65), 0.24 * Math.sin(Math.PI * 0.65), 0), string = cyl(0.002, 0.002, e1.y * 2, 0xf2f2f6); string.position.set(e1.x, 0, 0); g.add(string); g.add(put(cyl(0.016, 0.016, 0.07, 0x2a170a, { r: 0.9 }), -0.08, 0, 0));
+    var ar = new THREE.Group(); ar.add(put(cyl(0.004, 0.004, 0.36, 0xd9c7a0), 0, 0, 0)); var ah = new THREE.Mesh(new THREE.ConeGeometry(0.012, 0.035, 4), mat(0xdfe3ea, steel())); ah.position.y = 0.19; ar.add(ah); ar.add(put(box(0.025, 0.04, 0.002, 0xe5484d), 0, -0.16, 0)); ar.rotation.z = Math.PI / 2; ar.position.set(-0.02, 0.02, 0.01); g.add(ar); g.scale.setScalar(0.9); return g; }
+  function wStaff() { var g = new THREE.Group(); g.add(put(cyl(0.011, 0.014, 0.44, 0x5a3e24, { r: 0.8 }), 0, -0.04, 0)); var orb = new THREE.Mesh(new THREE.SphereGeometry(0.04, 20, 14), new THREE.MeshStandardMaterial({ color: 0x7be3ff, emissive: 0x35e0ff, emissiveIntensity: 1.1, roughness: 0.1 })); orb.position.y = 0.22; g.add(orb);
+    for (var k = 0; k < 3; k++) { var pr = cyl(0.005, 0.003, 0.07, 0xd9b24a, { m: 0.6 }); pr.position.set(Math.cos(k * 2.09) * 0.035, 0.2, Math.sin(k * 2.09) * 0.035); pr.rotation.z = -Math.cos(k * 2.09) * 0.4; pr.rotation.x = Math.sin(k * 2.09) * 0.4; g.add(pr); } return g; }
+  var ARMS3 = [[wSword, 0xff9f1a], [wShield, 0xb06bff], [wBow, 0xb06bff], [wAxe, 0x3d8bff], [wHammer, 0x3d8bff], [wStaff, 0x35d07f]];
+  var weapons = ARMS3.map(function (a, i) {
+    var g = new THREE.Group(), body = a[0](); g.add(body); var au = aura(a[1]); g.add(au); g.userData = { body: body, aura: au, k: 0, tw: null, col: i % 3, row: Math.floor(i / 3) };
+    g.visible = false; chestIn.add(g); return g;
+  });
+  chest.position.set(-2.5, 0, 0.0); chest.rotation.y = Math.PI / 2;
+  reg("coffre", chest, [-2.5, 0.75, 0.0], [-0.65, 1.3, 0.0], [-2.45, 0.98, 0.0], { label: "Coffre" });
+  blob(-2.5, 0.0, 0.32, 0.45, 0.5);
+  var chK = 0, chTw = null, chSel = 0;
+  function chestRun(to, dur, cb) { chTw = { from: chK, to: to, t0: performance.now(), dur: reduce ? 0 : dur, cb: cb }; }
+  function weaponRun(i, to, dur, delay) { var u = weapons[i].userData; u.tw = { from: u.k, to: to, t0: performance.now() + (reduce ? 0 : delay), dur: reduce ? 0 : dur }; }
+  function applyChest(now, dt) {
+    if (chTw) { var p = chTw.dur ? Math.min(1, (now - chTw.t0) / chTw.dur) : 1; chK = chTw.from + (chTw.to - chTw.from) * p; if (p >= 1) { var cb = chTw.cb; chTw = null; if (cb) cb(); } }
+    var e = ease(chK); lidG.rotation.x = -1.95 * e;
+    cGlow.material.opacity = 0.9 * e; cRays.material.opacity = 0.12 * e; sparks.material.opacity = 0.9 * e; coinM.emissiveIntensity = 0.2 + 0.9 * e;
+    var t = now / 1000;
+    if (e > 0.01) { for (var s = 0; s < spN; s++) { var ph = (t * 0.35 + spSeed[s][0]) % 1; spPos[s * 3] = spSeed[s][1] * (1 - ph * 0.5); spPos[s * 3 + 1] = 0.3 + ph * 0.9; spPos[s * 3 + 2] = spSeed[s][2] + Math.sin(ph * 9 + s) * 0.03; } spGeo.attributes.position.needsUpdate = true; }
+    weapons.forEach(function (g, i) {
+      var u = g.userData;
+      if (u.tw && now >= u.tw.t0) { var q = u.tw.dur ? Math.min(1, (now - u.tw.t0) / u.tw.dur) : 1; u.k = u.tw.from + (u.tw.to - u.tw.from) * q; if (q >= 1) u.tw = null; }
+      g.visible = u.k > 0.001; if (!g.visible) return;
+      var k = ease(u.k), sel = chestOpen && i === chSel ? 1 : 0;
+      var tx = (u.col - 1) * 0.32, ty = u.row === 0 ? 1.3 : 0.84, tz = 0.16 + sel * 0.12;
+      g.position.set(tx * k, 0.15 + (ty - 0.15) * k + Math.sin(t * 1.6 + i) * 0.015 * k, tz * k);
+      g.scale.setScalar((0.25 + 0.75 * k) * (1 + sel * 0.18));
+      u.body.rotation.y = sel ? u.body.rotation.y + dt * 1.8 : Math.sin(t * 0.8 + i) * 0.45;
+      u.aura.material.opacity = (0.35 + sel * 0.4) * k;
+    });
+  }
+
   /* --- Particules : buée du mug, poussières dans la lumière de la lampe --- */
   var steamN = 14, steamGeo = new THREE.BufferGeometry(), steamPos = new Float32Array(steamN * 3), steamSeed = [];
   for (var sn = 0; sn < steamN; sn++) steamSeed.push(Math.random());
@@ -2656,6 +2826,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     applyBook();
     applyPhone(now);
     applyTablet(now);
+    applyChest(now, dt);
     for (var fq = 0; fq < FR.length; fq++) { var fon = galOpen && fq === galIdx ? 1 : 0, fr = FR[fq]; fr.halo.material.opacity += (fon * 0.6 - fr.halo.material.opacity) * Math.min(1, dt * 4); fr.bulb.emissiveIntensity += ((fon ? 1.6 : 0.25) - fr.bulb.emissiveIntensity) * Math.min(1, dt * 4); }
     applyEraser(now);
     if (!reduce && focused === "projets" && chairK > 0.85) {
@@ -2714,7 +2885,7 @@ body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
     placePC();
     placePhone();
     placeTablet();
-    if (tw || bkTween || pkTw || tkTw || erTw || Math.abs(chairGoal - chairK) > 0.002 || focused === "projets" || (shadowTick++ % 4 === 0)) renderer.shadowMap.needsUpdate = true;
+    if (tw || bkTween || pkTw || tkTw || erTw || chTw || Math.abs(chairGoal - chairK) > 0.002 || focused === "projets" || (shadowTick++ % 4 === 0)) renderer.shadowMap.needsUpdate = true;
     renderer.render(scene, camera);
     if (!ready) { ready = true; $("#load").classList.add("gone"); }
     requestAnimationFrame(frame);
