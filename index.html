@@ -401,6 +401,73 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
  #panel[data-mode="pc"] .grid2,#panel[data-mode="board"] .grid2,#panel[data-mode="tablet"] .grid2{grid-template-columns:repeat(2,1fr)}
 }
 
+/* ===== PC : démarrage, bureau, fenêtre ===== */
+.win{flex:1;min-height:0;display:flex;flex-direction:column}
+#pcboot,#pctask{display:none}
+#panel[data-mode="pc"]{background:radial-gradient(circle at 18% 22%,#2a7de1aa 0,transparent 45%),radial-gradient(circle at 82% 75%,#9b5de5aa 0,transparent 50%),radial-gradient(circle at 60% 10%,#35e0ff55 0,transparent 35%),#0b1430}
+#panel[data-mode="pc"] .win{margin:14px 14px 8px;border-radius:10px;overflow:hidden;border:1px solid #ffffff26;background:var(--bg);box-shadow:0 24px 60px -10px #000a;opacity:0;transform:scale(.25);transform-origin:9% 12%}
+#panel.winup[data-mode="pc"] .win{opacity:1;transform:none;transition:transform .45s cubic-bezier(.2,.9,.3,1.1),opacity .25s}
+#panel[data-mode="pc"] .phead{background:#16202e;padding:8px 14px}
+#panel[data-mode="pc"] .phead::before{content:"";flex:none;width:52px;height:12px;background:radial-gradient(circle,#ff5f57 5px,transparent 6px) 0 0/12px 12px no-repeat,radial-gradient(circle,#ffbd2e 5px,transparent 6px) 20px 0/12px 12px no-repeat,radial-gradient(circle,#28c940 5px,transparent 6px) 40px 0/12px 12px no-repeat}
+#panel[data-mode="pc"] .phead .where{margin-right:auto}
+#panel[data-mode="pc"] #pctask{display:flex}
+#pctask{align-items:center;gap:10px;padding:6px 10px;background:#070b12e6;border-top:1px solid #ffffff1a;font:500 12px var(--sans);color:#9aa7bd;backdrop-filter:blur(6px)}
+#pctask .st{background:linear-gradient(135deg,#2a7de1,#35e0ff);color:#04121c;font-weight:700;padding:5px 12px;border-radius:6px}
+#pctask .tk{padding:5px 12px;border-radius:6px;background:#16233a;border-bottom:2px solid #f5a623;color:#e8edf5;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}
+#panel.winup #pctask .tk{opacity:1;transform:none}
+#pctask .tray{margin-left:auto;display:flex;gap:14px;align-items:center}#pctask em{font-style:normal;color:#35ff7a}#pctask em.vol{color:#9aa7bd}
+#pctask time{font-variant-numeric:tabular-nums;color:#e8edf5}
+#panel[data-mode="pc"] #pcboot{position:absolute;inset:0;z-index:5;display:none;cursor:pointer;color:#e8edf5;overflow:hidden}
+#panel[data-mode="pc"] #pcboot.run{display:block}
+#pcboot.done{opacity:0;transition:opacity .4s}
+#pcboot>div{position:absolute;inset:0;display:none}
+#pcboot[data-ph="post"]{background:#000}
+#pcboot[data-ph="post"] .post{display:block;padding:28px 30px;font:500 15px/1.7 var(--mono);color:#c8c8c8}
+#pcboot .post div{animation:fadein .15s both}
+#pcboot[data-ph="logo"]{background:#000}
+#pcboot[data-ph="logo"] .logo{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;animation:fadein .4s both}
+#pcboot .logo b{font:700 34px var(--mono);letter-spacing:.08em;background:linear-gradient(90deg,#2a7de1,#35e0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#pcboot .logo i{display:block;width:220px;height:5px;border-radius:4px;background:#1c2736;overflow:hidden}
+#pcboot .logo u{display:block;height:100%;width:0;background:linear-gradient(90deg,#2a7de1,#35e0ff);animation:bootbar .9s ease-in-out forwards}
+#pcboot[data-ph="login"]{background:radial-gradient(circle at 50% 40%,#1d3a6e,#0b1430)}
+#pcboot[data-ph="login"] .login{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;animation:fadein .4s both}
+#pcboot .av{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font:700 38px var(--mono);background:linear-gradient(135deg,#2a7de1,#9b5de5);box-shadow:0 0 0 4px #ffffff22}
+#pcboot .login b{font:600 20px var(--sans)}
+#pcboot .pw{min-width:200px;height:34px;border-radius:8px;background:#ffffff1f;border:1px solid #ffffff33;display:flex;align-items:center;padding:0 12px;letter-spacing:4px;font-size:12px}
+#pcboot .wel{opacity:0;font:500 14px var(--sans);color:#9fd2ff}
+#pcboot.ok .wel{opacity:1;transition:opacity .3s}#pcboot.ok .pw{border-color:#35ff7a}
+#pcboot[data-ph="wake"]{background:#000}
+#pcboot[data-ph="desk"] .desk{display:block}
+.icons{position:absolute;left:22px;top:18px;display:grid;gap:10px}
+.ico{width:78px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;border-radius:8px;font:500 12px var(--sans);text-shadow:0 1px 3px #000;border:1px solid transparent}
+.ico i{font-style:normal;font-size:32px;line-height:1}
+.ico.sel{background:#35e0ff33;border-color:#35e0ff88}
+.ico.open i{animation:pop .25s}
+.cur{position:absolute;left:60%;top:55%;width:18px;height:26px;background:#fff;clip-path:polygon(0 0,0 85%,26% 64%,44% 100%,58% 94%,42% 60%,78% 60%);filter:drop-shadow(0 1px 2px #000);transition:left .7s cubic-bezier(.4,.1,.2,1),top .7s cubic-bezier(.4,.1,.2,1);z-index:2}
+.cur.clk{animation:clk .18s}
+@keyframes clk{50%{transform:scale(.82)}}
+@keyframes pop{50%{transform:scale(1.2)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes bootbar{to{width:100%}}
+@keyframes crt{0%{transform:translate(-50%,0) scale(1,.012);filter:brightness(4)}40%{transform:translate(-50%,0) scale(1,.012);filter:brightness(4)}100%{transform:translate(-50%,0) scale(1,1);filter:none}}
+@keyframes crtoffD{0%{transform:translate(-50%,0) scale(1,1);filter:none;opacity:1}55%{transform:translate(-50%,0) scale(1,.012);filter:brightness(4);opacity:1}100%{transform:translate(-50%,0) scale(0,.012);filter:brightness(4);opacity:0}}
+@keyframes crtoffM{0%{transform:none;opacity:1}55%{transform:scale(1,.012);filter:brightness(4);opacity:1}100%{transform:scale(0,.012);opacity:0}}
+#panel.crtoff{animation:crtoffM .43s ease-in forwards!important}
+@media (min-width:821px){#panel.show[data-mode="pc"]{animation:crt .6s var(--ease) both}#panel.crtoff{animation:crtoffD .43s ease-in forwards!important}}
+@media (prefers-reduced-motion:reduce){#pcboot{display:none!important}#panel[data-mode="pc"] .win{opacity:1;transform:none}}
+
+/* Fenêtre du PC collée sur l'écran 3D (ordinateur) */
+@keyframes crtP{0%{transform:scale(1,.012);filter:brightness(4)}40%{transform:scale(1,.012);filter:brightness(4)}100%{transform:none;filter:none}}
+@keyframes crtoffP{0%{transform:none;opacity:1}55%{transform:scale(1,.012);filter:brightness(4);opacity:1}100%{transform:scale(0,.012);filter:brightness(4);opacity:0}}
+@media (min-width:821px){
+ #panel.onscreen[data-mode="pc"]{right:auto;bottom:auto;min-width:0;transform:none;opacity:1;border:0;border-radius:2px;box-shadow:0 0 50px 4px #4fa8ff30;transition:none;container-type:inline-size}
+ #panel.onscreen.show[data-mode="pc"]{animation:crtP .6s var(--ease) both}
+ #panel.onscreen.crtoff{animation:crtoffP .43s ease-in forwards!important}
+ #panel.onscreen[data-mode="pc"] .win{margin:1.4% 1.4% .8%}
+}
+
+body.open .hud{opacity:0;pointer-events:none;transition:opacity .3s}
+
 </style>
 </head>
 <body>
@@ -420,6 +487,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
 <nav class="dock" id="dock" aria-label="Parties de la chambre"></nav>
 
 <aside id="panel" role="dialog" aria-modal="true" aria-labelledby="ptitle" hidden>
+ <div class="win">
   <div class="phead"><span class="where" id="ptitle">Chambre</span><button class="close" id="close" type="button">← Retour à la chambre</button></div>
   <div id="pbody">
 <div class="pc" data-k="apropos">
@@ -711,6 +779,9 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   </div>
 
   </div>
+ </div>
+  <div id="pctask" aria-hidden="true"><span class="st">▦ Démarrer</span><span class="tk">📁 Projets</span><span class="tray"><em>● Réseau</em><em class="vol">🔊</em><time id="pcclock"></time></span></div>
+  <div id="pcboot" aria-hidden="true"><div class="post" id="pcpost"></div><div class="logo"><b>Liam OS</b><i><u></u></i></div><div class="login"><div class="av">L</div><b>Liam</b><div class="pw" id="pcpw"></div><span class="wel">Bienvenue</span></div><div class="desk"><div class="icons"><div class="ico" id="icoProj"><i>📁</i><span>Projets</span></div><div class="ico"><i>📄</i><span>Documents</span></div><div class="ico"><i>⌨️</i><span>Terminal</span></div><div class="ico"><i>🗑️</i><span>Corbeille</span></div></div><div class="cur" id="pccur"></div></div></div>
 </aside>
 
 <div id="intro">
@@ -850,6 +921,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
     panel.dataset.mode = md;
     $("#close").textContent = CLOSE_TXT[md];
     if (key === "competences") typeCmd("cat competences.md");
+    if (md === "pc") startPC(); else stopPC();
     if (key === "apropos") { skinHold = true; pickSkin(skinIdx, true); }
     $("#ptitle").textContent = p.obj + " · " + p.label;
     $("#pbody").scrollTop = 0;
@@ -871,12 +943,14 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
     if (part === "veille") { openBook(); return; }
     showPanel(part, scrollSel);
   }
-  function hidePanelNow() { if (!current) return; panel.classList.remove("show"); panel.hidden = true; document.body.classList.remove("open"); current = null; }
+  function hidePanelNow() { if (!current) return; stopPC(); panel.classList.remove("show", "winup", "crtoff"); panel.hidden = true; document.body.classList.remove("open"); current = null; }
   function closePanel() {
     if (reading) { closeBook(); return; }
     if (!current) return;
+    if (panel.dataset.mode === "pc" && !reduce && !pcOffing) { pcOffing = true; stopPC(); panel.classList.add("crtoff"); setTimeout(closePanel, 430); return; }
+    pcOffing = false; if (panel.dataset.mode === "pc") stopPC();
     panel.classList.remove("show"); document.body.classList.remove("open"); current = null;
-    setTimeout(function () { if (!current) panel.hidden = true; }, reduce ? 0 : 560);
+    setTimeout(function () { if (!current) { panel.hidden = true; panel.classList.remove("crtoff", "winup"); } }, reduce ? 0 : 560);
     if (sceneOK && focusKey) leaveFocus(focusKey);
     skinHold = false;
     if (opener && opener.focus) opener.focus({ preventScroll: true }); else $("#stage").focus({ preventScroll: true });
@@ -908,6 +982,44 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(a).then(function () { say("Adresse copiée"); }, function () { say(a); }); else say(a);
   });
 
+  /* PC : démarrage, bureau, barre des tâches */
+  var pcClock = null;
+  function tickPC() { var d = new Date(), c = $("#pcclock"); if (c) c.textContent = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2) + ":" + ("0" + d.getSeconds()).slice(-2); }
+  var booted = false, bootTimers = [], pcOffing = false;
+  function later(fn, ms) { bootTimers.push(setTimeout(fn, ms)); }
+  function pcReady() { var b = $("#pcboot"); bootTimers.forEach(clearTimeout); bootTimers = []; b.className = ""; panel.classList.add("winup"); booted = true; }
+  function startPC() {
+    var b = $("#pcboot"); bootTimers.forEach(clearTimeout); bootTimers = [];
+    panel.classList.remove("winup"); $("#icoProj").classList.remove("sel", "open");
+    tickPC(); clearInterval(pcClock); pcClock = setInterval(tickPC, 1000);
+    if (reduce) { pcReady(); return; }
+    b.className = "run"; var t = 0;
+    if (!booted) {
+      b.dataset.ph = "post"; var post = $("#pcpost"); post.innerHTML = "";
+      ["LIAM-PC  BIOS v2.6  (c) 2026", "Processeur ............ OK", "Mémoire 16 Go ......... OK", "SSD 512 Go ............ OK", "Carte réseau (DHCP) ... 192.168.10.24", "Démarrage de Liam OS…"].forEach(function (l, i) {
+        later(function () { var d = document.createElement("div"); d.textContent = l; post.appendChild(d); }, 140 * i + 200);
+      });
+      t = 1150; later(function () { b.dataset.ph = "logo"; }, t); t += 1000;
+      later(function () {
+        b.dataset.ph = "login"; var pw = $("#pcpw"); pw.textContent = "";
+        for (var i = 0; i < 8; i++) (function (i) { later(function () { pw.textContent += "●"; }, 300 + i * 75); })(i);
+        later(function () { b.classList.add("ok"); }, 1000);
+      }, t); t += 1500;
+    } else { b.dataset.ph = "wake"; t = 250; }
+    later(function () {
+      b.dataset.ph = "desk"; b.classList.remove("ok");
+      var c = $("#pccur"), ic = $("#icoProj"), dr = b.getBoundingClientRect();
+      c.style.transition = "none"; c.style.left = (dr.width * 0.62) + "px"; c.style.top = (dr.height * 0.58) + "px"; void c.offsetWidth; c.style.transition = "";
+      later(function () { var r = ic.getBoundingClientRect(); c.style.left = (r.left - dr.left + r.width * 0.55) + "px"; c.style.top = (r.top - dr.top + r.height * 0.45) + "px"; }, 120);
+      later(function () { ic.classList.add("sel"); c.classList.add("clk"); }, 880);
+      later(function () { ic.classList.add("open"); c.classList.remove("clk"); void c.offsetWidth; c.classList.add("clk"); }, 1080);
+    }, t);
+    t += 1300;
+    later(function () { b.classList.add("done"); panel.classList.add("winup"); booted = true; }, t);
+    later(function () { b.className = ""; }, t + 450);
+  }
+  function stopPC() { clearInterval(pcClock); bootTimers.forEach(clearTimeout); bootTimers = []; var b = $("#pcboot"); if (b) b.className = ""; }
+  $("#pcboot").addEventListener("click", pcReady);
   /* Tablette : invite de commande */
   var typeTimer = null;
   function typeCmd(txt) {
@@ -1128,7 +1240,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   var OBJLOCAL = {}; OBJ = OBJLOCAL;
   function reg(key, group, anchor, camPos, target, o) {
     o = o || {}; group.userData.key = key; scene.add(group);
-    OBJ[key] = { group: group, part: o.part || key, label: o.label || key, scroll: o.scroll || null, center: !!o.center, fov: o.fov || 0, anchor: new THREE.Vector3(anchor[0], anchor[1], anchor[2]), camPos: new THREE.Vector3(camPos[0], camPos[1], camPos[2]), target: new THREE.Vector3(target[0], target[1], target[2]), mats: [] };
+    OBJ[key] = { group: group, part: o.part || key, label: o.label || key, scroll: o.scroll || null, center: !!o.center, fov: o.fov || 0, fovN: o.fovN || 0, noclick: !!o.noclick, anchor: new THREE.Vector3(anchor[0], anchor[1], anchor[2]), camPos: new THREE.Vector3(camPos[0], camPos[1], camPos[2]), target: new THREE.Vector3(target[0], target[1], target[2]), mats: [] };
     group.traverse(function (m) {
       if (m.isMesh && m.material && m.material.emissive && !m.userData.noHover) OBJ[key].mats.push({ m: m.material, e: m.material.emissive.clone(), i: m.material.emissiveIntensity });
       if (m.isMesh) m.userData.key = key;
@@ -1141,7 +1253,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
     x.fillStyle = "#8f6642"; x.fillRect(0, 0, w, h);
     for (var i = 0; i < 90; i++) { x.strokeStyle = "rgba(60,32,12," + (0.06 + Math.random() * 0.14) + ")"; x.lineWidth = 1 + Math.random() * 2; x.beginPath(); var y = Math.random() * h; x.moveTo(0, y); x.bezierCurveTo(w * 0.3, y + (Math.random() - 0.5) * 14, w * 0.6, y + (Math.random() - 0.5) * 14, w, y + (Math.random() - 0.5) * 6); x.stroke(); }
   });
-  var desk = new THREE.Group();
+  var desk = new THREE.Group(), keysArr = [], lastKey = null, keyT = 0;
   desk.add(put(box(2.1, 0.06, 0.9, 0xffffff, { map: deskWood.t, r: 0.45, bump: deskWood.t, bs: 0.12 }), 0, 0.75, -2.5));
   [[-0.98, -2.12], [0.98, -2.12], [-0.98, -2.88], [0.98, -2.88]].forEach(function (p) { desk.add(put(box(0.06, 0.72, 0.06, 0x3a2a1c), p[0], 0.36, p[1])); });
   desk.add(put(box(2.0, 0.3, 0.02, 0x3a2a1c), 0, 0.6, -2.9));
@@ -1154,8 +1266,8 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   var scrMesh = plane(0.94, 0.54, new THREE.MeshBasicMaterial({ map: scr.t })); scrMesh.position.set(0, 1.22, -2.717); scrMesh.userData.noHover = true; desk.add(scrMesh);
   var scrDot = new THREE.Mesh(new THREE.SphereGeometry(0.008, 8, 6), new THREE.MeshBasicMaterial({ color: 0x35ff7a })); scrDot.position.set(0.44, 0.935, -2.715); desk.add(scrDot);
   desk.add(put(box(0.5, 0.02, 0.17, 0x2b303b, { r: 0.5 }), 0, 0.8, -2.3));
-  for (var kr = 0; kr < 3; kr++) for (var kc = 0; kc < 12; kc++) { var key = box(0.032, 0.008, 0.032, 0x3a4150, { r: 0.6 }); key.position.set(-0.19 + kc * 0.0345, 0.814, -2.35 + kr * 0.04); key.castShadow = false; desk.add(key); }
-  desk.add(put(box(0.07, 0.025, 0.11, 0x2b303b), 0.4, 0.8, -2.32));
+  for (var kr = 0; kr < 3; kr++) for (var kc = 0; kc < 12; kc++) { var key = box(0.032, 0.008, 0.032, 0x3a4150, { r: 0.6 }); key.position.set(-0.19 + kc * 0.0345, 0.814, -2.35 + kr * 0.04); key.castShadow = false; desk.add(key); keysArr.push(key); }
+  var mouse3 = put(box(0.07, 0.025, 0.11, 0x2b303b), 0.4, 0.8, -2.32); desk.add(mouse3);
   desk.add(put(box(0.5, 0.004, 0.4, 0x1a1f2b, { r: 0.9 }), 0.38, 0.783, -2.32)); // tapis souris
   // enceintes
   [-0.68, 0.68].forEach(function (x) { var sp = box(0.12, 0.22, 0.12, 0x1b1e26, { r: 0.7 }); sp.position.set(x, 0.89, -2.74); desk.add(sp); var cone = cyl(0.04, 0.04, 0.01, 0x3a3f4d, { r: 0.5 }); cone.rotation.x = Math.PI / 2; cone.position.set(x, 0.86, -2.675); desk.add(cone); var tw = cyl(0.015, 0.015, 0.01, 0x888fa0, { m: 0.6 }); tw.rotation.x = Math.PI / 2; tw.position.set(x, 0.95, -2.675); desk.add(tw); });
@@ -1175,7 +1287,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   var pen = cyl(0.004, 0.004, 0.14, 0x1d2f6f); pen.rotation.z = Math.PI / 2; pen.rotation.y = 0.5; pen.position.set(-0.42, 0.79, -2.15); desk.add(pen);
   var hp = new THREE.Group(); hp.add(tor(0.09, 0.012, 0x20242c, { r: 0.5 }, Math.PI)); var cL = cyl(0.04, 0.04, 0.03, 0x20242c); cL.rotation.z = Math.PI / 2; cL.position.set(-0.09, 0, 0); hp.add(cL); var cR = cL.clone(); cR.position.x = 0.09; hp.add(cR);
   hp.position.set(-0.95, 0.86, -2.55); hp.rotation.y = 0.4; desk.add(hp);
-  reg("projets", desk, [0, 1.62, -2.74], [0, 1.22, -1.9], [0, 1.2, -2.74], { label: "Projets", center: true, fov: 50 });
+  reg("projets", desk, [0, 1.62, -2.74], [0, 1.22, -1.9], [0, 1.2, -2.74], { label: "Projets", center: true, fov: 40, fovN: 62 });
 
   /* --- Téléphone sur le bureau (Contact) --- */
   var phone = new THREE.Group();
@@ -1519,7 +1631,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   [0.1, -0.1].forEach(function (zz) { var sw2 = box(0.12, 0.05, 0.03, 0x20242c, { m: 0.6 }); sw2.position.set(-0.55, 0.45, zz * 1.1); bike.add(sw2); });
   var helmet = new THREE.Group(); helmet.add(sph(0.14, 0xf2f2f6, { r: 0.25, m: 0.1 }, 1.1, 1, 0.95)); var visor = sph(0.142, 0x15181f, { r: 0.1, m: 0.6 }, 0.6, 0.45, 0.97); visor.position.set(0.07, 0.01, 0); helmet.add(visor); var stripe = box(0.01, 0.01, 0.2, 0xc4161c); stripe.position.set(0, 0.14, 0); helmet.add(stripe); helmet.position.set(-0.22, 0.97, 0); helmet.rotation.z = 0.15; bike.add(helmet);
   bike.position.set(-2.15, 0, 1.9); bike.rotation.y = Math.PI / 2 + 0.1;
-  reg("moto", bike, [-2.15, 1.55, 1.9], [-0.4, 1.4, 0.4], [-2.15, 0.7, 1.9], { label: "Moto", part: "passions", scroll: "#p-moto" });
+  reg("moto", bike, [-2.15, 1.55, 1.9], [-0.4, 1.4, 0.4], [-2.15, 0.7, 1.9], { label: "Moto", part: "passions", scroll: "#p-moto", noclick: true });
   blob(-2.15, 1.9, 1.05, 0.4, 0.5);
 
   /* --- Coin sport : sac de frappe, haltères, barre, gants, chaussures, médailles --- */
@@ -1553,7 +1665,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   sport.add(shoe(1.5, 1.95, 0.5), shoe(1.65, 2.1, 0.35));
   scene.add(sport);
   // 1 clé, plusieurs lots : on enregistre le groupe sport pour le survol et le clic
-  reg("sport", sport, [2.1, 2.3, 2.0], [0.5, 1.45, 0.3], [2.1, 1.1, 2.4], { label: "Sport", part: "passions", scroll: "#p-sport" });
+  reg("sport", sport, [2.1, 2.3, 2.0], [0.5, 1.45, 0.3], [2.1, 1.1, 2.4], { label: "Sport", part: "passions", scroll: "#p-sport", noclick: true });
   blob(2.1, 2.0, 0.45, 0.45, 0.3); blob(2.48, 2.7, 1.1, 0.4, 0.35); blob(1.6, 2.3, 0.4, 0.4, 0.3);
 
   /* ===== Décor détaillé ===== */
@@ -1702,22 +1814,26 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   function step(now) {
     if (!tw) return;
     var p = tw.dur ? Math.min(1, (now - tw.t0) / tw.dur) : 1, e = ease(p);
-    cam.pos.lerpVectors(tw.f.pos, tw.t.pos, e); cam.yaw = tw.f.yaw + norm(tw.t.yaw - tw.f.yaw) * e;
-    cam.pitch = tw.f.pitch + (tw.t.pitch - tw.f.pitch) * e; cam.fov = tw.f.fov + (tw.t.fov - tw.f.fov) * e;
+    cam.pos.lerpVectors(tw.f.pos, tw.t.pos, e);
+    var ey = tw.ylag ? ease(Math.max(0, (p - 0.4) / 0.6)) : tw.ylead ? ease(Math.min(1, p / 0.55)) : e;
+    cam.pos.y = tw.f.pos.y + (tw.t.pos.y - tw.f.pos.y) * ey; cam.yaw = tw.f.yaw + norm(tw.t.yaw - tw.f.yaw) * e;
+    cam.pitch = tw.f.pitch + (tw.t.pitch - tw.f.pitch) * e + (tw.ylag ? -0.16 * Math.sin(Math.PI * e) : 0); cam.fov = tw.f.fov + (tw.t.fov - tw.f.fov) * e;
     if (p >= 1) tw = null;
   }
   var HOME = new THREE.Vector3(0, 1.55, 1.4);
   function focusOn(key) {
     var o = OBJ[key]; focused = key;
     var a = angles(o.camPos, o.target);
-    var vw = window.innerWidth, vh = window.innerHeight, wide = vw > 820, fov = o.fov || (wide ? 58 : 74);
+    var vw = window.innerWidth, vh = window.innerHeight, wide = vw > 820, fov = wide ? (o.fov || 58) : (o.fovN || o.fov || 74);
     var vf = fov * Math.PI / 180, hf = 2 * Math.atan(Math.tan(vf / 2) * (vw / vh)), yaw = a.yaw, pitch = a.pitch;
     if (!o.center) { if (wide) yaw -= Math.atan((Math.min(580, vw) / vw) * Math.tan(hf / 2)); else pitch -= Math.atan(0.5 * Math.tan(vf / 2)); }
-    goTo({ pos: o.camPos.clone(), yaw: yaw, pitch: pitch, fov: fov }, 1300);
+    goTo({ pos: o.camPos.clone(), yaw: yaw, pitch: pitch, fov: fov }, key === "projets" ? 1800 : 1300);
+    if (tw && key === "projets") tw.ylag = true;
   }
   function leaveFocus(key) {
     var o = OBJ[key]; var a = angles(HOME, o.target); focused = null; focusKey = null;
-    goTo({ pos: HOME.clone(), yaw: a.yaw, pitch: -0.05, fov: 70 }, 1100);
+    goTo({ pos: HOME.clone(), yaw: a.yaw, pitch: -0.05, fov: 70 }, key === "projets" ? 1500 : 1100);
+    if (tw && key === "projets") tw.ylead = true;
   }
 
   var drag = null, vel = { x: 0 }, mouse = { x: 0, y: 0, has: false, px: 0, py: 0 };
@@ -1750,7 +1866,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   function pick(cx, cy) {
     ray.setFromCamera({ x: (cx / window.innerWidth) * 2 - 1, y: -(cy / window.innerHeight) * 2 + 1 }, camera);
     var hit = ray.intersectObjects(scene.children, true);
-    for (var i = 0; i < hit.length; i++) { var o = hit[i].object; if (!o.isMesh || o.material.transparent || o.visible === false) continue; var k = o.userData.key; return k && OBJ[k] ? k : null; }
+    for (var i = 0; i < hit.length; i++) { var o = hit[i].object; if (!o.isMesh || o.material.transparent || o.visible === false) continue; var k = o.userData.key; return k && OBJ[k] && !OBJ[k].noclick ? k : null; }
     return null;
   }
   function setHover(k) {
@@ -1763,14 +1879,24 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
   }
 
   var tags = [], labelsEl = $("#labels");
-  Object.keys(OBJ).forEach(function (k) {
+  Object.keys(OBJ).filter(function (k) { return !OBJ[k].noclick; }).forEach(function (k) {
     var el = document.createElement("button"); el.type = "button"; el.className = "tag"; el.tabIndex = -1; el.setAttribute("aria-hidden", "true");
     el.innerHTML = "<i></i>" + OBJ[k].label;
     el.addEventListener("click", function () { if (ENTERED) openPart(k, null); });
     el.addEventListener("pointerenter", function () { setHover(k); }); el.addEventListener("pointerleave", function () { setHover(null); });
     labelsEl.appendChild(el); tags.push({ key: k, el: el });
   });
-  var tmp = new THREE.Vector3();
+  var tmp = new THREE.Vector3(), pcA = new THREE.Vector3(), pcB = new THREE.Vector3(), pcOn = false;
+  function placePC() {
+    var on = current === "projets" && panel.dataset.mode === "pc" && window.innerWidth > 820;
+    if (!on) { if (pcOn) { panel.style.left = panel.style.top = panel.style.width = panel.style.height = ""; panel.classList.remove("onscreen"); pcOn = false; } return; }
+    pcA.set(-0.47, 1.49, -2.716).project(camera); pcB.set(0.47, 0.95, -2.716).project(camera);
+    var w = window.innerWidth, h = window.innerHeight;
+    var x1 = (pcA.x * 0.5 + 0.5) * w, y1 = (-pcA.y * 0.5 + 0.5) * h, x2 = (pcB.x * 0.5 + 0.5) * w, y2 = (-pcB.y * 0.5 + 0.5) * h;
+    panel.style.left = Math.min(x1, x2).toFixed(1) + "px"; panel.style.top = Math.min(y1, y2).toFixed(1) + "px";
+    panel.style.width = Math.abs(x2 - x1).toFixed(1) + "px"; panel.style.height = Math.abs(y2 - y1).toFixed(1) + "px";
+    if (!pcOn) { panel.classList.add("onscreen"); pcOn = true; }
+  }
   function placeTags() {
     var w = window.innerWidth, h = window.innerHeight;
     tags.forEach(function (t) {
@@ -1811,6 +1937,13 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
     if (Math.abs(camera.fov - cam.fov) > 0.01) { camera.fov = cam.fov; camera.updateProjectionMatrix(); }
     camera.updateMatrixWorld();
     applyBook();
+    if (!reduce && focused === "projets" && chairK > 0.85) {
+      var ts = now / 1000;
+      cam.pos.y = 1.22 + Math.sin(ts * 1.7) * 0.0035; cam.pos.x = Math.sin(ts * 0.8) * 0.006;
+      chair.rotation.y = Math.sin(ts * 0.6) * 0.035;
+      mouse3.position.x = 0.4 + Math.sin(ts * 1.3) * 0.012 + Math.sin(ts * 3.1) * 0.004; mouse3.position.z = -2.32 + Math.cos(ts * 1.1) * 0.01;
+      if (now - keyT > 85) { keyT = now; if (lastKey) lastKey.position.y = 0.814; if (Math.random() < 0.7) { lastKey = keysArr[Math.floor(Math.random() * keysArr.length)]; lastKey.position.y = 0.809; } else lastKey = null; }
+    } else if (lastKey) { lastKey.position.y = 0.814; lastKey = null; }
     chairK += (chairGoal - chairK) * Math.min(1, dt * 3.2);
     chair.position.set(-1.05 + 1.05 * chairK, 0, -1.75 - 0.2 * chairK); chair.rotation.y = 1.1 * (1 - chairK);
     if (mirrorFlash > 0) { mirrorFlash = Math.max(0, mirrorFlash - dt * 3); drawMirror(skinIdx); }
@@ -1854,6 +1987,7 @@ body.reading .hud,body.reading .tag{opacity:0;pointer-events:none}
     for (var i = 0; i < leds.length; i++) { var l = leds[i]; if (!reduce) { l.t -= dt; if (l.t <= 0) { l.t = 0.15 + Math.random() * 1.6; l.m.color.setHex(Math.random() < 0.65 ? l.on : l.off); } } else l.m.color.setHex(l.on); }
     if (mouse.has && !drag && !focused && ENTERED) setHover(pick(mouse.px, mouse.py));
     placeTags();
+    placePC();
     renderer.render(scene, camera);
     if (!ready) { ready = true; $("#load").classList.add("gone"); }
     requestAnimationFrame(frame);
